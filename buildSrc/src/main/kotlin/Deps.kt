@@ -7,7 +7,7 @@ object Deps {
     private val chipsSupportLibrary = "28.0.0-alpha1"
     private val okHttpVersion = "3.9.1"
     private val espressoVersion = "2.2.2"
-    private val ankoVersion = "0.10.8"git dd
+    private val ankoVersion = "0.10.8"
     private val retrofitVersion = "2.4.0"
     private val robolectricVersion = "3.5.1"
     private val mockitoVersion = "2.8.9"
@@ -35,15 +35,22 @@ object Deps {
     private val ktorVersion = "1.1.3"
     private val roomVersion = "1.1.0"
     private val coroutineVersion = "1.1.1"
+    private val enamelVersion = "0.9.0"
 
+    object Enamel {
+        val core = "com.benoitthore.enamel:core:$enamelVersion"
+        val geometry = "com.benoitthore.enamel:geometry:$enamelVersion"
+        val layout = "com.benoitthore.enamel:layout:$enamelVersion"
+        val android = "com.benoitthore.enamel:android:$enamelVersion"
+    }
 
-    object arch {
+    object Arch {
         val runtime = "androidx.lifecycle:lifecycle-runtime:2.0.0:$archVersion"
         val extensions = "androidx.lifecycle:lifecycle-extensions:$archVersion"
     }
 
     //play services dependencies
-    object playServices {
+    object PlayServices {
         val adsidentifier = "com.google.android.gms:play-services-ads-identifier:$playServicesVersion"
         val vision = "com.google.android.gms:play-services-vision:$playServicesVersion"
         val firebase = "com.google.firebase:firebase-messaging:$playServicesVersion"
@@ -51,7 +58,7 @@ object Deps {
         val material = "com.google.android.material:material:1.1.0-alpha01"
     }
 
-    object xDependencies {
+    object XDependencies {
         val core = "androidx.core:core-ktx:1.0.1"
         val cardview = "androidx.cardview:cardview:1.0.0"
         val appcompat = "androidx.appcompat:appcompat:1.0.2"
@@ -61,14 +68,14 @@ object Deps {
         val dynamicanimations = "androidx.dynamicanimation:dynamicanimation:1.0.0"
     }
 
-    object kotlinDependencies {
+    object KotlinDependencies {
         val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
         val reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
         val kluent = "org.amshove.kluent:kluent:1.4"
     }
 
 
-    object squareup {
+    object Squareup {
         val retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
         val retrofitRxAdapter = "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
         val jacksonConvertor = "com.squareup.retrofit2:converter-jackson:$retrofitVersion"
@@ -78,40 +85,40 @@ object Deps {
         val retrofitMock = "com.squareup.retrofit2:retrofit-mock:$retrofitVersion"
     }
 
-    object jackson {
+    object Jackson {
         val core = "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
         val kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
     }
 
-    object coroutines {
+    object Coroutines {
         val retrofit = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
         val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
         val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
     }
 
-    object mockito {
+    object Mockito {
         val core = "org.mockito:mockito-core:$mockitoVersion"
         val android = "org.mockito:mockito-android:$mockitoVersion"
         val kotlin = "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
 
     }
 
-    object rxJava {
+    object RxJava {
         val rxJava = "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
         val rxAndroid = "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     }
 
-    object rxBasedLibs {
+    object RxBasedLibs {
         val permissions = "com.github.tbruyelle:rxpermissions:0.10.2"
         val bindings = "com.jakewharton.rxbinding2:rxbinding:2.1.1"
         val bindingsCompat = "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.1.1"
     }
 
-    object paper {
+    object Paper {
         val paperDb = "io.paperdb:paperdb:$paperVersion"
     }
 
-    object exoplayer {
+    object Exoplayer {
         val core = "com.google.android.exoplayer:exoplayer-core:$exoPlayerVersion"
         val ui = "com.google.android.exoplayer:exoplayer-ui:$exoPlayerVersion"
     }
@@ -126,61 +133,61 @@ object Deps {
 //            glideCompiler= "com.github.bumptech.glide:compiler:$glideVersion"
 //    }
 
-    object picasso {
+    object Picasso {
         val picasso = "com.squareup.picasso:picasso:$picassoVersion"
     }
 
-    object koin {
+    object Koin {
         val core = "org.koin:koin-core:$koin_version"
         val android = "org.koin:koin-android:$koin_version"
         val coreExt = "org.koin:koin-core-ext:$koin_version"
         val test = "org.koin:koin-test:$koin_version"
     }
 
-    object discreteScrollView {
+    object DiscreteScrollView {
         val scrollview = "com.yarolegovich:discrete-scrollview:1.4.9"
     }
 
-    object overscroller {
+    object Overscroller {
         val overscroller = "me.everything:overscroll-decor-android:1.0.4"
     }
 
-    object rmsSwitch {
+    object RmsSwitch {
         val rmswitch = "com.rm:rmswitch:1.2.2"
     }
 
-    object junit {
+    object Junit {
         val junit = "junit:junit:$junitVersion"
     }
 
-    object ktlint {
+    object Ktlint {
         val ktlint = "com.github.shyiko:ktlint:0.20.0"
     }
 
-    object jbox2d {
+    object Jbox2d {
         val jbox2d = "org.jbox2d:jbox2d-library:$jbox2dVersion"
     }
 
-    object processing {
+    object Processing {
         val core = "org.processing:core:$processingVersion"
     }
 
-    object koma {
+    object Koma {
         val koma = "com.kyonifer:koma-core-ejml:$komaVersion"
     }
 
-    object deeplearning4j {
+    object Deeplearning4j {
         val core = "org.deeplearning4j:deeplearning4j-core:$deeplearning4jVersion"
         val nd4j = "org.nd4j:nd4j-native-platform:$deeplearning4jVersion"
     }
 
-    object tensorflow {
+    object Tensorflow {
         val core = "org.tensorflow:tensorflow:$tensorflowVersion"
         val gpu = "org.tensorflow:libtensorflow:$tensorflowVersion"
         val jniGpu = "org.tensorflow:libtensorflow_jni_gpu:$tensorflowVersion"
     }
 
-    object ktor {
+    object Ktor {
         val core = "io.ktor:ktor-server-core:$ktorVersion"
         val netty = "io.ktor:ktor-server-netty:$ktorVersion"
         val html = "io.ktor:ktor-html-builder:$ktorVersion"
@@ -188,7 +195,7 @@ object Deps {
 
     }
 
-    object room {
+    object Room {
         val runtime = "android.arch.persistence.room:runtime:$roomVersion"
         val coroutines = "androidx.room:room-coroutines:2.1.0-alpha04" //https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5
 
