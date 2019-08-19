@@ -1,38 +1,40 @@
 object Deps {
 
+    val kotlinVersion = "1.3.31"
+
     //Version
-    private val supportLibrary = '28.0.0'
-    private val chipsSupportLibrary = '28.0.0-alpha1'
-    private val okHttpVersion = '3.9.1'
-    private val espressoVersion = '2.2.2'
-    private val ankoVersion = '0.10.8'
-    private val retrofitVersion = '2.4.0'
-    private val robolectricVersion = '3.5.1'
-    private val mockitoVersion = '2.8.9'
-    private val constraintLayout = '1.1.3'
-    private val rxJavaVersion = '2.2.0'
-    private val rxAndroidVersion = '2.0.0'
-    private val paperVersion = '2.6'
-    private val daggerVersion = '2.14.1'
-    private val mockitoKotlinVersion = '1.6.0'
-    private val exoPlayerVersion = '2.9.0'
-    private val stethoVersion = '1.5.0'
-    private val glideVersion = '4.7.1'
-    private val hyperionVersion = '0.9.23'
-    private val archVersion = '2.0.0'
-    private val playServicesVersion = '15.0.0'
-    private val junitVersion = '4.12'
-    private val jbox2dVersion = '2.2.1.1'
-    private val processingVersion = '3.3.7'
-    private val komaVersion = '0.12'
-    private val deeplearning4jVersion = '0.9.1'
-    private val koin_version = '1.0.2'
-    private val picassoVersion = '2.71828'
-    private val tensorflowVersion = '1.12.0'
-    private val jacksonVersion = '2.9.8'
-    private val ktorVersion = '1.1.3'
-    private val roomVersion = '1.1.0'
-    private val coroutineVersion = '1.1.1'
+    private val supportLibrary = "28.0.0"
+    private val chipsSupportLibrary = "28.0.0-alpha1"
+    private val okHttpVersion = "3.9.1"
+    private val espressoVersion = "2.2.2"
+    private val ankoVersion = "0.10.8"git dd
+    private val retrofitVersion = "2.4.0"
+    private val robolectricVersion = "3.5.1"
+    private val mockitoVersion = "2.8.9"
+    private val constraintLayout = "1.1.3"
+    private val rxJavaVersion = "2.2.0"
+    private val rxAndroidVersion = "2.0.0"
+    private val paperVersion = "2.6"
+    private val daggerVersion = "2.14.1"
+    private val mockitoKotlinVersion = "1.6.0"
+    private val exoPlayerVersion = "2.9.0"
+    private val stethoVersion = "1.5.0"
+    private val glideVersion = "4.7.1"
+    private val hyperionVersion = "0.9.23"
+    private val archVersion = "2.0.0"
+    private val playServicesVersion = "15.0.0"
+    private val junitVersion = "4.12"
+    private val jbox2dVersion = "2.2.1.1"
+    private val processingVersion = "3.3.7"
+    private val komaVersion = "0.12"
+    private val deeplearning4jVersion = "0.9.1"
+    private val koin_version = "1.0.2"
+    private val picassoVersion = "2.71828"
+    private val tensorflowVersion = "1.12.0"
+    private val jacksonVersion = "2.9.8"
+    private val ktorVersion = "1.1.3"
+    private val roomVersion = "1.1.0"
+    private val coroutineVersion = "1.1.1"
 
 
     object arch {
@@ -62,7 +64,7 @@ object Deps {
     object kotlinDependencies {
         val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
         val reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-        val kluent = 'org.amshove.kluent:kluent:1.4'
+        val kluent = "org.amshove.kluent:kluent:1.4"
     }
 
 
