@@ -16,3 +16,5 @@ doodle/
 .idea/
 gradle/
 local.properties
+
+buildSrc/build/*
