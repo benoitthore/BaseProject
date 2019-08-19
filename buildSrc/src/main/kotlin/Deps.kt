@@ -36,12 +36,13 @@ object Deps {
     private val roomVersion = "1.1.0"
     private val coroutineVersion = "1.1.1"
     private val enamelVersion = "0.9.0"
+    private val splittiesVersion = "2.1.1"
 
     object Enamel {
         val core = "com.benoitthore.enamel:core:$enamelVersion"
         val geometry = "com.benoitthore.enamel:geometry:$enamelVersion"
         val layout = "com.benoitthore.enamel:layout:$enamelVersion"
-        val android = "com.benoitthore.enamel:android:$enamelVersion"
+        val android = "com.benoitthore.enamel:layout-android:$enamelVersion-b"
     }
 
     object Arch {
@@ -198,6 +199,9 @@ object Deps {
     object Room {
         val runtime = "android.arch.persistence.room:runtime:$roomVersion"
         val coroutines = "androidx.room:room-coroutines:2.1.0-alpha04" //https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5
+    }
 
+    object Splitties{
+        val viewDsl = "com.louiscad.splitties:splitties-views-dsl:$splittiesVersion"
     }
 }
