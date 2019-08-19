@@ -15,11 +15,16 @@ import com.benoitthore.enamel.layout_android.EViewGroup
 import splitties.views.backgroundColor
 import splitties.views.dsl.core.textView
 
+
+//import com.benoitthore.enamel.layout_android.dp
+//import com.benoitthore.enamel.layout_android.eViewGroup
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
+
 
 
         val v = eViewGroup {
@@ -31,6 +36,7 @@ class MainActivity : AppCompatActivity() {
                 text = "text1"
 
             }.eLayoutRef()
+
             val tv2 = context.textView {
 
                 text = "text2"

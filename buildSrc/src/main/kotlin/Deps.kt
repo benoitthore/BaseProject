@@ -42,7 +42,7 @@ object Deps {
         val core = "com.benoitthore.enamel:core:$enamelVersion"
         val geometry = "com.benoitthore.enamel:geometry:$enamelVersion"
         val layout = "com.benoitthore.enamel:layout:$enamelVersion"
-        val android = "com.benoitthore.enamel:layout-android:$enamelVersion-c"
+        val android = "com.benoitthore.enamel:layout-android:$enamelVersion-e"
     }
 
     object Arch {
