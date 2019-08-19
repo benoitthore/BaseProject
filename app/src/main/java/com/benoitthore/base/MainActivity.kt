@@ -2,7 +2,8 @@ package com.benoitthore.base
 
 import android.content.Context
 import android.content.res.Resources
-import android.support.v7.app.AppCompatActivity
+import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.children
 import androidx.core.view.doOnNextLayout
@@ -11,8 +12,8 @@ import com.benoitthore.enamel.geometry.layout.ELayout
 import com.benoitthore.enamel.geometry.layout.dsl.arranged
 import com.benoitthore.enamel.geometry.layout.dsl.stackedBottomCenter
 import com.benoitthore.enamel.layout_android.EViewGroup
+import splitties.views.backgroundColor
 import splitties.views.dsl.core.textView
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,7 +24,8 @@ class MainActivity : AppCompatActivity() {
 
         val v = eViewGroup {
 
-            children
+//            backgroundColor = Color.RED
+
             val tv1 = context.textView {
 
                 text = "text1"
