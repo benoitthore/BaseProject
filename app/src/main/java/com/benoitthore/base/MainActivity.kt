@@ -1,5 +1,6 @@
 package com.benoitthore.base
 
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
@@ -7,25 +8,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.children
 import androidx.core.view.doOnNextLayout
+import com.benoitthore.enamel.core.animations.interpolateWith
 import com.benoitthore.enamel.geometry.alignement.EAlignment.*
 import com.benoitthore.enamel.geometry.layout.ELayout
 import com.benoitthore.enamel.geometry.layout.dsl.arranged
 import com.benoitthore.enamel.geometry.layout.dsl.stackedBottomCenter
-import com.benoitthore.enamel.layout_android.EViewGroup
+import com.benoitthore.enamel.layout.android.EViewGroup
+
 import splitties.views.backgroundColor
 import splitties.views.dsl.core.textView
-
-
-//import com.benoitthore.enamel.layout_android.dp
-//import com.benoitthore.enamel.layout_android.eViewGroup
+import kotlin.reflect.typeOf
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
-
-
 
         val v = eViewGroup {
 
