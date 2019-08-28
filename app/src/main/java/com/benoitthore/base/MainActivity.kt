@@ -9,6 +9,8 @@ import com.benoitthore.enamel.geometry.layout.ELayout
 import com.benoitthore.enamel.geometry.layout.dsl.arranged
 import com.benoitthore.enamel.geometry.layout.dsl.stackedBottomCenter
 import com.benoitthore.enamel.layout.android.EViewGroup
+import com.benoitthore.enamel.layout.android.dp
+import com.benoitthore.enamel.layout.android.eViewGroup
 import splitties.views.dsl.core.button
 import splitties.views.dsl.core.textView
 
@@ -29,15 +31,19 @@ class MainActivity : AppCompatActivity() {
 
             }.eLayoutRef()
 
+
             val tv2 = context.button {
 
+                setOnClickListener {
+                    text = ((text.toString().toIntOrNull() ?: 0) + 1).toString()
+                }
                 text = "text2"
 
             }.eLayoutRef()
 
 
             listOf(tv1, tv2)
-                    .stackedBottomCenter(32.dp)
+                    .stackedBottomCenter(16.dp)
                     .arranged(center)
 
         }
@@ -47,13 +53,3 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
-
-
-fun Context.eViewGroup(block: EViewGroup.() -> ELayout): EViewGroup = EViewGroup(
-        this
-).apply {
-    layout = block()
-}
-
-val Number.dp: Int
-    get() = (toFloat() * Resources.getSystem().displayMetrics.density).toInt()

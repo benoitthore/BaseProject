@@ -32,9 +32,6 @@ dependencies {
     implementation(Deps.Enamel.core)
     implementation(Deps.Enamel.geometry)
     implementation(Deps.Enamel.layout)
-
-//    implementation("org.eclipse.jgit:org.eclipse.jgit:5.4.0.201906121030-r")
-
 //    implementation(Deps.Enamel.android)
 
     implementation(Deps.Coroutines.core)
