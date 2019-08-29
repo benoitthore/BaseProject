@@ -1,6 +1,7 @@
 package com.benoitthore.words.home
 
 import android.content.Context
+import android.view.Gravity.CENTER
 import android.view.View
 import com.benoitthore.enamel.geometry.alignement.EAlignment.*
 import com.benoitthore.enamel.geometry.layout.EEmptyLayout
@@ -33,12 +34,14 @@ class AddWordUI(context: Context,
 
     private val eViewGroup = context.eViewGroup { EEmptyLayout }
 
-    private val inputA = context.textView {
+    private val inputA = context.editText {
         setText(data.wordA)
+        gravity = CENTER
     }.withTag("inputA")
 
-    private val inputB = context.textView {
+    private val inputB = context.editText {
         setText(data.wordB)
+        gravity = CENTER
     }.withTag("inputB")
 
     private val okButton = context.button {
@@ -50,7 +53,7 @@ class AddWordUI(context: Context,
                 if (canClick) {
                     canClick = false
                     hide()
-                    delay(1500L)
+                    delay(1100L)
                     show()
                     canClick = true
                 }
@@ -61,8 +64,9 @@ class AddWordUI(context: Context,
 
     private val layout: ELayout = run {
         val inputLayout = listOf(inputA, inputB).laidIn(eViewGroup)
-                .stackedRightCenter(8.dp)
+                .equallySized(rightCenter,32.dp)
                 .snugged()
+                .paddedHorizontally(32.dp)
 
         val confirmationLayout = okButton.laidIn(eViewGroup)
 
@@ -76,7 +80,7 @@ class AddWordUI(context: Context,
         listOf(inputA, inputB, okButton).laidIn(eViewGroup)
                 .stackedRightCenter()
                 .snugged()
-                .sized(0,0)
+                .sized(100,100)
                 .arranged(topLeft)
     }
 

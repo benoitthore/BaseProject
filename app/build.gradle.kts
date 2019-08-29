@@ -49,7 +49,7 @@ dependencies {
 
     implementation(Deps.Enamel.core)
     implementation(Deps.Enamel.geometry)
-    implementation(Deps.Enamel.layout)
+//    implementation(Deps.Enamel.layout)
 //    implementation(Deps.Enamel.android)
 
     implementation(Deps.Coroutines.core)
