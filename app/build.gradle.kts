@@ -59,6 +59,15 @@ dependencies {
 
     implementation(Deps.XDependencies.core)
     implementation(Deps.XDependencies.appcompat)
+    implementation(Deps.XDependencies.recyclerView)
+
+
+    implementation("com.xwray:groupie:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-alpha03")
+
+    implementation(Deps.Koin.core)
+    implementation(Deps.Koin.android)
+
 
     testImplementation("junit:junit:4.12")
     androidTestImplementation("com.android.support.test:runner:1.0.2")

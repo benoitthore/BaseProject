@@ -1,4 +1,4 @@
-package com.benoitthore.words.home
+package com.benoitthore.words
 
 import android.content.Context
 import android.view.Gravity.CENTER
@@ -17,7 +17,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import splitties.views.dsl.core.button
 import splitties.views.dsl.core.editText
-import splitties.views.dsl.core.textView
 
 //interface IAddView {
 //
