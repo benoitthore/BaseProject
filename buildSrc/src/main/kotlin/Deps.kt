@@ -63,6 +63,7 @@ object Deps {
         val core = "androidx.core:core-ktx:1.0.1"
         val cardview = "androidx.cardview:cardview:1.0.0"
         val appcompat = "androidx.appcompat:appcompat:1.0.2"
+        val recyclerView = "androidx.appcompat:recyclerview:1.0.0"
         val legacy = "androidx.legacy:legacy-support-v4:1.0.0"
         val annotation = "androidx.annotation:annotation:1.0.0"
         val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-alpha2"
