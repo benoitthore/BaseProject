@@ -1,51 +1,60 @@
 package com.benoitthore.words
 
+import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
-import splitties.views.dsl.core.view
+import com.benoitthore.enamel.geometry.figures.ERect
+import com.benoitthore.enamel.geometry.figures.ESize
+import com.benoitthore.enamel.geometry.figures.size
+import com.benoitthore.enamel.geometry.layout.ELayout
+import com.benoitthore.enamel.geometry.layout.ELayoutLeaf
+import com.benoitthore.words.features.add.AddWordFragment
+import splitties.views.backgroundColor
+import splitties.views.dsl.core.*
+import kotlin.math.max
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var frame: FrameLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val ui = AddWordUI(
-                this,
-                data = AddWordUI.Data("word1", "word2")
-        )
 
-        ui.apply { show() }
-
-
-        val rv = view<RecyclerView> {
-            this@view.adapter = adapter
+        frame = frameLayout {
+            // TODO Refactor to use ELayout instead
+            id = View.generateViewId()
+            backgroundColor = Color.RED
         }
 
-        setContentView(ui.view)
+        setContentView(frame)
 
+        supportFragmentManager.beginTransaction()
+                .replace(frame.id, AddWordFragment())
+                .addToBackStack(AddWordFragment::class.java.name)
+                .commit()
     }
 }
 
-class AddWordFragment : Fragment() {
+class EFrameLayout(override val childLayouts: List<ELayout>) : ELayout {
 
-    val presenter : AddWordPresenter by inject {  parametersOf(lifecycleScope) }
-
-    val ui by lazy {
-        AddWordUI(
-                requireActivity(),
-                data = AddWordUI.Data("word1", "word2")
-        )
+    override fun arrange(frame: ERect) {
+        childLayouts.forEach { it.arrange(frame) }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            ui.view
+    override fun size(toFit: ESize): ESize {
+        var w = 0f
+        var h = 0f
+        childLayouts.forEach {
+            val s = it.size(toFit)
+            w = max(w, s.width)
+            h = max(h, s.height)
+        }
+
+        return w size h
+    }
 }
