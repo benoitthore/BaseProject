@@ -49,11 +49,14 @@ dependencies {
 
     implementation(Deps.Enamel.core)
     implementation(Deps.Enamel.geometry)
-//    implementation(Deps.Enamel.layout)
-//    implementation(Deps.Enamel.android)
+    implementation(Deps.Enamel.layout)
+    implementation(Deps.Enamel.android)
 
     implementation(Deps.Coroutines.core)
     implementation(Deps.Coroutines.android)
+
+    implementation(Deps.Jackson.core)
+    implementation(Deps.Jackson.kotlin)
 
     implementation(Deps.Splitties.viewDsl)
 

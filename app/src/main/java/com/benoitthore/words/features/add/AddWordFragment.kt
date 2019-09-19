@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.benoitthore.words.features.show.ListWordsPresenter
 import com.benoitthore.words.ui.AddWordUI
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf

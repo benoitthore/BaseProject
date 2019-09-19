@@ -39,16 +39,16 @@ class AddWordUI(context: Context,
     private val inputA = context.editText {
         setText(data.wordA)
         gravity = CENTER
-    }.withTag("inputA")
+    }
 
     private val inputB = context.editText {
         setText(data.wordB)
         gravity = CENTER
-    }.withTag("inputB")
+    }
 
     private val okButton = context.button {
         text = strings.okButton
-    }.withTag("okButton")
+    }
 
 
     private val eViewGroup = context.eViewGroup {

@@ -1,7 +1,6 @@
 package com.benoitthore.words.features.utils
 
 import android.widget.TextView
-import com.benoitthore.words.features.add.AddWordFragment
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
