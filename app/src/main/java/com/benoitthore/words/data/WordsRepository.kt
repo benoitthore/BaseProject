@@ -3,13 +3,7 @@ package com.benoitthore.words.data
 import com.benoitthore.enamel.core.findIndex
 
 class WordsRepository {
-    private val wordList: MutableList<WordsData> = mutableListOf(
-            "1" to "A",
-            "2" to "B",
-            "3" to "C"
-    )
-            .map { (a, b) -> WordsData(a, b) }
-            .toMutableList()
+    private val wordList: MutableList<WordsData> = mutableListOf()
 
     suspend fun get(): List<WordsData> {
         return wordList

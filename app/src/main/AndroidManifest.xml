@@ -12,7 +12,9 @@
         android:theme="@style/AppTheme"
         android:name=".WordsApp"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity
+            android:windowSoftInputMode="adjustResize"
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

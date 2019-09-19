@@ -21,23 +21,16 @@ class AddWordPresenter(val wordsRepo: WordsRepository,
 
     fun start(view: AddWordView) {
         this.view = view
-        view.wordA = "Word AAA"
-        view.wordB = "Word BBB"
     }
 
     fun onOkClicked() {
         mainThreadCoroutine {
-            listOf(
-                    async {
-                        wordsRepo.put(
-                                WordsData(
-                                        wordA = view.wordA,
-                                        wordB = view.wordB
-                                )
-                        )
-                    },
-                    async { delay(1000L) }
-            ).awaitAll()
+            wordsRepo.put(
+                    WordsData(
+                            wordA = view.wordA,
+                            wordB = view.wordB
+                    )
+            )
             view.close()
         }
     }

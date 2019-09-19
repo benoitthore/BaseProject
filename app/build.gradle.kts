@@ -65,8 +65,7 @@ dependencies {
     implementation(Deps.XDependencies.recyclerView)
 
 
-    implementation("com.xwray:groupie:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-alpha03")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-alpha04")
 
     implementation(Deps.Koin.core)
     implementation(Deps.Koin.android)

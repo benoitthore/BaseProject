@@ -15,6 +15,7 @@ class ListWordsPresenter(val wordsRepo: WordsRepository,
     private lateinit var view: ListWordsView
 
     interface ListWordsView {
+        fun showAddWordUI()
         var words: List<WordsData>
     }
 
@@ -26,11 +27,7 @@ class ListWordsPresenter(val wordsRepo: WordsRepository,
     }
 
     fun onAddClicked() {
-        Toast.makeText(
-                (view as Fragment).context,
-                "ADD",
-                Toast.LENGTH_SHORT
-        ).show()
+       view.showAddWordUI()
     }
 
 }
