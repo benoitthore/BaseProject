@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(28)
+    compileSdkVersion(SdkSupportVersion.compileSdkVersion)
     defaultConfig {
         applicationId = "com.benoitthore.base"
-        minSdkVersion(16)
-        targetSdkVersion(28)
+        minSdkVersion(SdkSupportVersion.minSdkVersion)
+        targetSdkVersion(SdkSupportVersion.targetSdkVersion)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -41,6 +41,7 @@ dependencies {
 
     implementation(Deps.XDependencies.core)
     implementation(Deps.XDependencies.appcompat)
+    implementation(Deps.XDependencies.constraintLayout)
     implementation("com.google.android.gms:play-services-vision:15.0.0")
 
 

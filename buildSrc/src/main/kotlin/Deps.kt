@@ -37,6 +37,7 @@ object Deps {
     private val coroutineVersion = "1.2.2"
     private val enamelVersion = "0.9.0"
     private val splittiesVersion = "2.1.1"
+    private val constraintLayoutVersion: String = "2.0.0-beta3"
 
     object Enamel {
         val core = "com.benoitthore.enamel:core:$enamelVersion"
@@ -66,7 +67,7 @@ object Deps {
         val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
         val legacy = "androidx.legacy:legacy-support-v4:1.0.0"
         val annotation = "androidx.annotation:annotation:1.0.0"
-        val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-alpha2"
+        val constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
         val dynamicanimations = "androidx.dynamicanimation:dynamicanimation:1.0.0"
     }
 
