@@ -19,37 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
 
-        val v = eViewGroup {
-
-            //            backgroundColor = Color.RED
-
-            val tv1 = context.textView {
-
-                text = "text1"
-
-            }.eLayoutRef()
-
-
-            val tv2 = context.button {
-
-                setOnClickListener {
-                    text = ((text.toString().toIntOrNull() ?: 0) + 1).toString()
-                }
-                text = "text2"
-
-            }.eLayoutRef()
-
-
-            listOf(tv1, tv2)
-                    .stackedBottomCenter(16.dp)
-                    .arranged(center)
-
-        }
-
-
-        setContentView(v)
-
+        setContentView()
     }
 }

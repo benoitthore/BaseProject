@@ -41,6 +41,8 @@ dependencies {
 
     implementation(Deps.XDependencies.core)
     implementation(Deps.XDependencies.appcompat)
+    implementation("com.google.android.gms:play-services-vision:15.0.0")
+
 
     testImplementation("junit:junit:4.12")
     androidTestImplementation("com.android.support.test:runner:1.0.2")
