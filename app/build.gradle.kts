@@ -29,7 +29,8 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
     implementation(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
 
-    implementation(Deps.Enamel.core)
+    implementation("com.benoitthore.enamel:core:0.9.0-A")
+    implementation(Deps.Enamel.geometryAndroid)
     implementation(Deps.Enamel.geometry)
     implementation(Deps.Enamel.layout)
 //    implementation(Deps.Enamel.android)

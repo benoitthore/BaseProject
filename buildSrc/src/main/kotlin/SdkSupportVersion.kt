@@ -1,5 +1,5 @@
 object SdkSupportVersion{
     val compileSdkVersion = 28
-    val minSdkVersion = 16
+    val minSdkVersion = 19
     val targetSdkVersion = 28
 }
