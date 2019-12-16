@@ -29,22 +29,20 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
     implementation(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
 
-    implementation("com.benoitthore.enamel:core:0.9.0-A")
+    implementation(Deps.Enamel.core)
     implementation(Deps.Enamel.geometryAndroid)
     implementation(Deps.Enamel.geometry)
     implementation(Deps.Enamel.layout)
+
 //    implementation(Deps.Enamel.android)
+//    implementation(Deps.Splitties.viewDsl)
 
     implementation(Deps.Coroutines.core)
     implementation(Deps.Coroutines.android)
 
-    implementation(Deps.Splitties.viewDsl)
-
     implementation(Deps.XDependencies.core)
     implementation(Deps.XDependencies.appcompat)
     implementation(Deps.XDependencies.constraintLayout)
-    implementation("com.google.android.gms:play-services-vision:15.0.0")
-
 
     testImplementation("junit:junit:4.12")
     androidTestImplementation("com.android.support.test:runner:1.0.2")
