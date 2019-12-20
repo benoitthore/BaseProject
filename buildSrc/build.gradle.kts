@@ -8,7 +8,7 @@ repositories {
     maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
 }
 
-val kotlinVersion = "1.3.31" // Also in Deps.kt
+val kotlinVersion = "1.3.41" // Also in Deps.kt
 
 dependencies {
     compileOnly(gradleApi())

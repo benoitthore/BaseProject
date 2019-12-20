@@ -1,6 +1,6 @@
 object Deps {
 
-    val kotlinVersion = "1.3.40"
+    val kotlinVersion = "1.3.41"
 
     //Version
     private val supportLibrary = "28.0.0"
@@ -62,9 +62,9 @@ object Deps {
     }
 
     object XDependencies {
-        val core = "androidx.core:core-ktx:1.0.1"
+        val core = "androidx.core:core-ktx:1.1.0"
         val cardview = "androidx.cardview:cardview:1.0.0"
-        val appcompat = "androidx.appcompat:appcompat:1.0.2"
+        val appcompat = "androidx.appcompat:appcompat:1.1.0"
         val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
         val legacy = "androidx.legacy:legacy-support-v4:1.0.0"
         val annotation = "androidx.annotation:annotation:1.0.0"
@@ -196,7 +196,11 @@ object Deps {
         val netty = "io.ktor:ktor-server-netty:$ktorVersion"
         val html = "io.ktor:ktor-html-builder:$ktorVersion"
         val cio = "io.ktor:ktor-server-cio:$ktorVersion"
+    }
 
+    object Korlibs {
+//        https://korlibs.soywiz.com/klock/
+        val klock = "com.soywiz.korlibs.klock:klock-jvm:1.7.3"
     }
 
     object Room {
@@ -204,7 +208,12 @@ object Deps {
         val coroutines = "androidx.room:room-coroutines:2.1.0-alpha04" //https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5
     }
 
-    object Splitties{
+    object Splitties {
         val viewDsl = "com.louiscad.splitties:splitties-views-dsl:$splittiesVersion"
+    }
+
+    object Lifecycle {
+        val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
+        val archLifecycle = "android.arch.lifecycle:extensions:1.1.1"
     }
 }
