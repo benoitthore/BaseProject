@@ -1,6 +1,4 @@
-package com.benoitthore.base.repo
-
-import com.benoitthore.base.repo.ApiResponse
+package com.benoitthore.base.lib.repo
 
 interface Cache<T> {
     val cachedValue: T?

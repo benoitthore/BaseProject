@@ -48,8 +48,12 @@ dependencies {
 
     implementation(Deps.Squareup.retrofit)
     implementation(Deps.Squareup.jacksonConvertor)
+
     implementation(Deps.Jackson.core)
     implementation(Deps.Jackson.kotlin)
+
+    implementation(Deps.Koin.core)
+    implementation(Deps.Koin.android)
 
     implementation(Deps.XDependencies.core)
     implementation(Deps.XDependencies.appcompat)

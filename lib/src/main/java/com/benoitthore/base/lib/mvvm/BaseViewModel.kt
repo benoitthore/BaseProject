@@ -1,4 +1,4 @@
-package com.benoitthore.base.mvvm
+package com.benoitthore.base.lib.mvvm
 
 import android.os.Looper
 import androidx.fragment.app.Fragment

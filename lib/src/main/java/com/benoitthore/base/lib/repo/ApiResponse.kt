@@ -1,7 +1,6 @@
-package com.benoitthore.base.repo
+package com.benoitthore.base.lib.repo
 
 
-import com.mobile.core.repo.Mapper
 import retrofit2.Response
 
 sealed class ApiResponse<T> {

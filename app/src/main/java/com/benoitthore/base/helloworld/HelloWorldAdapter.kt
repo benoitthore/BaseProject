@@ -5,11 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.benoitthore.base.R
+import com.benoitthore.base.helloworld.data.NoteModel
 import kotlinx.android.synthetic.main.hello_world_list_item.view.*
 
 class HelloWorldAdapter : RecyclerView.Adapter<HelloWorldListItemViewHolder>() {
 
-    var list: List<NoteData> = emptyList()
+    var list: List<NoteModel> = emptyList()
     set(value) {
         field = value
         notifyDataSetChanged() // TODO replace with diff utils
@@ -27,7 +28,7 @@ class HelloWorldAdapter : RecyclerView.Adapter<HelloWorldListItemViewHolder>() {
 }
 
 class HelloWorldListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-    fun bind(noteData: NoteData) {
-        itemView.helloWorldListItemTextView.text = noteData.data
+    fun bind(NoteModel: NoteModel) {
+        itemView.helloWorldListItemTextView.text = NoteModel.text
     }
 }

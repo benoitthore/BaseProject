@@ -28,7 +28,7 @@ object Deps {
     private val processingVersion = "3.3.7"
     private val komaVersion = "0.12"
     private val deeplearning4jVersion = "0.9.1"
-    private val koin_version = "1.0.2"
+    private val koin_version = "2.0.1"
     private val picassoVersion = "2.71828"
     private val tensorflowVersion = "1.12.0"
     private val jacksonVersion = "2.9.8"

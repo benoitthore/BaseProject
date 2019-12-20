@@ -7,11 +7,18 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.benoitthore.base.R
-import com.benoitthore.base.coroutines.mainThreadCoroutine
-import com.benoitthore.base.mvvm.Accumulator
-import com.benoitthore.base.mvvm.lazyViewModel
+import com.benoitthore.base.lib.coroutines.mainThreadCoroutine
+import com.benoitthore.base.lib.mvvm.Accumulator
+import com.benoitthore.base.lib.mvvm.lazyViewModel
+import com.benoitthore.enamel.core.threading.singleThreadCoroutine
 import kotlinx.android.synthetic.main.hello_world_fragment.*
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
+import java.util.*
+import java.util.Collection
+import java.util.concurrent.Executors
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class HelloWorldFragment : Fragment(R.layout.hello_world_fragment) {
 
@@ -26,6 +33,15 @@ class HelloWorldFragment : Fragment(R.layout.hello_world_fragment) {
         helloWorldList.adapter = adapter
         helloWorldList.layoutManager = LinearLayoutManager(requireContext())
 
+        button.setOnClickListener {
+            viewModel.onButtonClicked()
+        }
+
+        button.setOnLongClickListener {
+            viewModel.onButtonLongClicked()
+            true
+        }
+
         // setup background color
         defaultColor = (view.background as? ColorDrawable)?.color ?: defaultColor
         view.setBackgroundColor(defaultColor)
@@ -35,12 +51,15 @@ class HelloWorldFragment : Fragment(R.layout.hello_world_fragment) {
 
     private fun handleEvent(accumulator: Accumulator<HelloWorldViewModel.Event>) {
         accumulator.consume {
-            when (it) {
+            val a = when (it) {
                 is HelloWorldViewModel.Event.Blink1 -> {
                     blink(Color.RED)
                 }
                 is HelloWorldViewModel.Event.Blink2 -> {
                     blink(Color.GREEN)
+                }
+                HelloWorldViewModel.Event.Close -> {
+                    requireActivity().finish()
                 }
             }
         }
