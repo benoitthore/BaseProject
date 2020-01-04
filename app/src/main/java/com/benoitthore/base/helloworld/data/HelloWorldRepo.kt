@@ -1,43 +1,45 @@
 package com.benoitthore.base.helloworld.data
 
+import com.benoitthore.base.helloworld.data.db.*
 import com.benoitthore.base.lib.repo.Mapper
 import com.benoitthore.base.lib.repo.invoke
-import com.benoitthore.enamel.core.math.random
-import com.benoitthore.enamel.core.randomString
+import com.benoitthore.enamel.core.print
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class HelloWorldRepo : KoinComponent {
-    private val dtoToModel: Mapper<NoteDTO, NoteModel> = Mappers.dtoToModel
-    private val modelToDTO: Mapper<NoteModel, NoteDTO> = Mappers.modelToDto
+    private val dtoToModel: Mapper<NoteDB, NoteModel> = Mappers.dtoToModel
+    private val modelToDTO: Mapper<NoteModel, NoteDB> = Mappers.modelToDto
 
+
+    private val noteDAO : NoteDao by inject()
+
+    init {
+        GlobalScope.launch {
+
+            while(true){
+                delay(1000L)
+                noteDAO.insertNote(NoteDB(text = "text",date = System.currentTimeMillis()))
+            }
+
+        }
+
+        GlobalScope.launch {
+//            noteDAO.getNotes().collect { data->
+//                println("ben_\t$data")
+//            }
+        }
+    }
     // TODO Replace with Room
-    private val _notes = mutableListOf<NoteDTO>()
+    private val _notes = mutableListOf<NoteDB>()
     private val notesModel get() = dtoToModel.invoke(_notes)
 
     private val channel = ConflatedBroadcastChannel(notesModel)
-
-    init {
-        fun addRandomNote() {
-            val text = randomString(random(5, 25).toInt(), 'A'..'Z', 'a'..'z')
-            val note = NoteModel(text, System.currentTimeMillis())
-            addNote(note)
-        }
-
-        addRandomNote()
-        addRandomNote()
-        GlobalScope.launch {
-            while (true) {
-                delay(2000L)
-                addRandomNote()
-            }
-        }
-    }
-
 
     fun openSubscription() = channel.openSubscription()
 
@@ -53,19 +55,5 @@ class HelloWorldRepo : KoinComponent {
     fun clear() {
         _notes.clear()
         broadcast()
-    }
-}
-
-
-data class NoteDTO(val text: String, val date: Long)
-data class NoteModel(val text: String, val date: Long)
-
-object Mappers {
-    val dtoToModel = object : Mapper<NoteDTO, NoteModel> {
-        override fun invoke(o: NoteDTO) = NoteModel(text = o.text, date = o.date)
-    }
-
-    val modelToDto = object : Mapper<NoteModel, NoteDTO> {
-        override fun invoke(o: NoteModel) = NoteDTO(text = o.text, date = o.date)
     }
 }

@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.benoitthore.base.R
-import com.benoitthore.base.helloworld.data.NoteModel
+import com.benoitthore.base.helloworld.data.db.NoteModel
 import kotlinx.android.synthetic.main.hello_world_list_item.view.*
 
 class HelloWorldAdapter : RecyclerView.Adapter<HelloWorldListItemViewHolder>() {

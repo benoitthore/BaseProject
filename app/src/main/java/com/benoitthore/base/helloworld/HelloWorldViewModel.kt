@@ -4,14 +4,13 @@ import androidx.lifecycle.viewModelScope
 import com.benoitthore.base.helloworld.HelloWorldViewModel.Event
 import com.benoitthore.base.helloworld.HelloWorldViewModel.State
 import com.benoitthore.base.helloworld.data.HelloWorldRepo
-import com.benoitthore.base.helloworld.data.NoteModel
+import com.benoitthore.base.helloworld.data.db.NoteModel
 import com.benoitthore.base.lib.mvvm.BaseViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class HelloWorldViewModel(
-) : BaseViewModel<State, Event>(), KoinComponent {
+class HelloWorldViewModel : BaseViewModel<State, Event>(), KoinComponent {
 
     val repo: HelloWorldRepo by inject()
 

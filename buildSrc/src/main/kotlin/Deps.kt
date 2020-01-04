@@ -34,6 +34,7 @@ object Deps {
     private val jacksonVersion = "2.9.8"
     private val ktorVersion = "1.1.3"
     private val roomVersion = "1.1.0"
+//    private val roomVersion = "2.2.0"
     private val coroutineVersion = "1.2.2"
     private val enamelVersion = "0.9.0-B"
     private val splittiesVersion = "2.1.1"
@@ -205,6 +206,7 @@ object Deps {
 
     object Room {
         val runtime = "android.arch.persistence.room:runtime:$roomVersion"
+        val kapt = "android.arch.persistence.room:compiler:$roomVersion"
         val coroutines = "androidx.room:room-coroutines:2.1.0-alpha04" //https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5
     }
 

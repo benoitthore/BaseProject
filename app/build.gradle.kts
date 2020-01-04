@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
 }
 
 android {
@@ -54,6 +55,15 @@ dependencies {
 
     implementation(Deps.Koin.core)
     implementation(Deps.Koin.android)
+
+    // Fix room with this https://github.com/Eli-Fox/LEGO-Catalog/blob/master/app/build.gradle
+    kapt ("androidx.room:room-compiler:2.2.0")
+    implementation ("androidx.room:room-runtime:2.2.0")
+    implementation ("androidx.room:room-ktx:2.2.0")
+
+    implementation(Deps.Room.runtime)
+//    implementation(Deps.Room.coroutines)
+    kapt(Deps.Room.kapt)
 
     implementation(Deps.XDependencies.core)
     implementation(Deps.XDependencies.appcompat)

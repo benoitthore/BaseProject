@@ -4,11 +4,14 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
 }
 
 android {
     compileSdkVersion(SdkSupportVersion.compileSdkVersion)
     defaultConfig {
+        multiDexEnabled = true
+
 //        applicationId = "com.benoitthore.base.lib"
         minSdkVersion(SdkSupportVersion.minSdkVersion)
         targetSdkVersion(SdkSupportVersion.targetSdkVersion)
@@ -48,6 +51,9 @@ dependencies {
 
     implementation(Deps.Koin.core)
     implementation(Deps.Koin.android)
+
+//    implementation(Deps.Room.runtime)
+//    kapt(Deps.Room.kapt)
 
     implementation(Deps.XDependencies.core)
     implementation(Deps.XDependencies.appcompat)
