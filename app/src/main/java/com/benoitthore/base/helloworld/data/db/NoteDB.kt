@@ -30,21 +30,21 @@ interface NoteDao {
     suspend fun getNoteByText(name: String): List<NoteDB>
 
     @Query("SELECT * FROM NoteDB")
-    suspend fun getNotes(): List<NoteDB>
+    fun getNotes(): Flow<List<NoteDB>>
 }
 
 
 
 
 // MODEL
-data class NoteModel(val text: String, val date: Long)
+data class NoteModel(val text: String, val date: Long, val id : Int? = null)
 
-object Mappers {
+object NoteMappers {
     val dtoToModel = object : Mapper<NoteDB, NoteModel> {
-        override fun invoke(o: NoteDB) = NoteModel(text = o.text, date = o.date)
+        override fun invoke(o: NoteDB) = NoteModel(text = o.text, date = o.date, id = o.id)
     }
 
     val modelToDto = object : Mapper<NoteModel, NoteDB> {
-        override fun invoke(o: NoteModel) = NoteDB(text = o.text, date = o.date)
+        override fun invoke(o: NoteModel) = NoteDB(text = o.text, date = o.date, id = o.id)
     }
 }

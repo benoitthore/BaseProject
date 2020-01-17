@@ -1,59 +1,37 @@
 package com.benoitthore.base.helloworld.data
 
+import com.benoitthore.base.MyKoinModule
 import com.benoitthore.base.helloworld.data.db.*
 import com.benoitthore.base.lib.repo.Mapper
 import com.benoitthore.base.lib.repo.invoke
-import com.benoitthore.enamel.core.print
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class HelloWorldRepo : KoinComponent {
-    private val dtoToModel: Mapper<NoteDB, NoteModel> = Mappers.dtoToModel
-    private val modelToDTO: Mapper<NoteModel, NoteDB> = Mappers.modelToDto
+    private val dtoToModel: Mapper<NoteDB, NoteModel> by inject(MyKoinModule.Keys.noteDtoToModel)
+    private val modelToDTO: Mapper<NoteModel, NoteDB> by inject(MyKoinModule.Keys.noteModelToDto)
+    private val noteDAO: NoteDao by inject()
 
+    /**
+    We don't want to use the ViewModel scope when accessing the Database:
+    if the activity gets killed we still want to finish the DB transaction
+     */
+    private val daoScope: CoroutineScope by inject(MyKoinModule.Keys.globalScope)
 
-    private val noteDAO : NoteDao by inject()
-
-    init {
-        GlobalScope.launch {
-
-            while(true){
-                delay(1000L)
-                noteDAO.insertNote(NoteDB(text = "text",date = System.currentTimeMillis()))
-            }
-
-        }
-
-        GlobalScope.launch {
-//            noteDAO.getNotes().collect { data->
-//                println("ben_\t$data")
-//            }
-        }
-    }
-    // TODO Replace with Room
-    private val _notes = mutableListOf<NoteDB>()
-    private val notesModel get() = dtoToModel.invoke(_notes)
-
-    private val channel = ConflatedBroadcastChannel(notesModel)
-
-    fun openSubscription() = channel.openSubscription()
+    fun getNotes() = noteDAO.getNotes().map { dtoToModel(it) }
 
     fun addNote(note: NoteModel) {
-        _notes += modelToDTO(note)
-        broadcast()
+        daoScope.launch { noteDAO.insertNote(modelToDTO(note)) }
     }
 
-    fun broadcast() {
-        GlobalScope.launch { channel.send(notesModel) }
+    fun deleteNote(note: NoteModel) {
+        daoScope.launch {
+            noteDAO.deleteNote(modelToDTO(note))
+        }
     }
 
-    fun clear() {
-        _notes.clear()
-        broadcast()
-    }
 }

@@ -3,6 +3,7 @@ package com.benoitthore.base.lib.mvvm
 import android.os.Looper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean

@@ -8,7 +8,7 @@ import com.benoitthore.base.R
 import com.benoitthore.base.helloworld.data.db.NoteModel
 import kotlinx.android.synthetic.main.hello_world_list_item.view.*
 
-class HelloWorldAdapter : RecyclerView.Adapter<HelloWorldListItemViewHolder>() {
+class HelloWorldAdapter(val onItemCLicked : (NoteModel)->Unit) : RecyclerView.Adapter<HelloWorldListItemViewHolder>() {
 
     var list: List<NoteModel> = emptyList()
     set(value) {
@@ -17,7 +17,8 @@ class HelloWorldAdapter : RecyclerView.Adapter<HelloWorldListItemViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HelloWorldListItemViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.hello_world_list_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.hello_world_list_item, parent, false),
+            onItemCLicked
     )
 
     override fun getItemCount() = list.size
@@ -27,8 +28,9 @@ class HelloWorldAdapter : RecyclerView.Adapter<HelloWorldListItemViewHolder>() {
     }
 }
 
-class HelloWorldListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-    fun bind(NoteModel: NoteModel) {
-        itemView.helloWorldListItemTextView.text = NoteModel.text
+class HelloWorldListItemViewHolder(itemView: View, val onItemCLicked: (NoteModel) -> Unit) : RecyclerView.ViewHolder(itemView){
+    fun bind(noteModel: NoteModel) {
+        itemView.helloWorldListItemTextView.text = noteModel.text
+        itemView.setOnClickListener { onItemCLicked(noteModel) }
     }
 }

@@ -1,43 +1,31 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
+apply plugin: 'com.android.library'
 
-plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("android.extensions")
-    kotlin("kapt")
-}
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion(SdkSupportVersion.compileSdkVersion)
+    compileSdkVersion SdkSupportVersion.compileSdkVersion
     defaultConfig {
-        applicationId = "com.benoitthore.base"
-        minSdkVersion(SdkSupportVersion.minSdkVersion)
-        targetSdkVersion(SdkSupportVersion.targetSdkVersion)
-        versionCode = 1
-        versionName = "1.0"
+        minSdkVersion SdkSupportVersion.minSdkVersion
+        targetSdkVersion SdkSupportVersion.targetSdkVersion
+        versionCode  1
+        versionName  "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
-    implementation(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
-
-    implementation(project(":lib"))
     implementation(Deps.Enamel.core)
     implementation(Deps.Enamel.geometryAndroid)
     implementation(Deps.Enamel.geometry)
     implementation(Deps.Enamel.layout)
-
-//    implementation(Deps.Enamel.android)
-//    implementation(Deps.Splitties.viewDsl)
 
     implementation(Deps.Korlibs.klock)
 
