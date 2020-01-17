@@ -31,7 +31,6 @@ object MyKoinModule {
 
 class HelloWorldApplication : Application() {
 
-
     override fun onCreate() {
         super.onCreate()
 
@@ -40,6 +39,5 @@ class HelloWorldApplication : Application() {
             modules(listOf(MyKoinModule.module))
         }
     }
-
 }
 

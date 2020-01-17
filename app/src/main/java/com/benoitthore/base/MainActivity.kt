@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.root_view,HelloWorldFragment())
+                .replace(R.id.root_view, HelloWorldFragment())
                 .commit()
     }
 }

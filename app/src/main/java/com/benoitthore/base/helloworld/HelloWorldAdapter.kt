@@ -8,13 +8,13 @@ import com.benoitthore.base.R
 import com.benoitthore.base.helloworld.data.db.NoteModel
 import kotlinx.android.synthetic.main.hello_world_list_item.view.*
 
-class HelloWorldAdapter(val onItemCLicked : (NoteModel)->Unit) : RecyclerView.Adapter<HelloWorldListItemViewHolder>() {
+class HelloWorldAdapter(val onItemCLicked: (NoteModel) -> Unit) : RecyclerView.Adapter<HelloWorldListItemViewHolder>() {
 
     var list: List<NoteModel> = emptyList()
-    set(value) {
-        field = value
-        notifyDataSetChanged() // TODO replace with diff utils
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged() // TODO replace with diff utils
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HelloWorldListItemViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.hello_world_list_item, parent, false),
@@ -28,7 +28,7 @@ class HelloWorldAdapter(val onItemCLicked : (NoteModel)->Unit) : RecyclerView.Ad
     }
 }
 
-class HelloWorldListItemViewHolder(itemView: View, val onItemCLicked: (NoteModel) -> Unit) : RecyclerView.ViewHolder(itemView){
+class HelloWorldListItemViewHolder(itemView: View, val onItemCLicked: (NoteModel) -> Unit) : RecyclerView.ViewHolder(itemView) {
     fun bind(noteModel: NoteModel) {
         itemView.helloWorldListItemTextView.text = noteModel.text
         itemView.setOnClickListener { onItemCLicked(noteModel) }

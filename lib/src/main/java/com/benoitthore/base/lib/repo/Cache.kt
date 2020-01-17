@@ -11,7 +11,7 @@ interface NetworkCache<T> : Cache<ApiResponse<T>> {
 }
 
 class InMemoryNetworkCache<T>(
-    override val serviceCall: suspend () -> ApiResponse<T>
+        override val serviceCall: suspend () -> ApiResponse<T>
 ) : NetworkCache<T> {
 
     override var cachedValue: ApiResponse<T>? = null
@@ -22,13 +22,13 @@ class InMemoryNetworkCache<T>(
     }
 
     override suspend fun get(): ApiResponse<T> =
-        cachedValue ?: serviceCall()
-            .also {
-                when (it) {
-                    is ApiResponse.Success -> cachedValue = it
-                    else -> {
-                        // Only store success
+            cachedValue ?: serviceCall()
+                    .also {
+                        when (it) {
+                            is ApiResponse.Success -> cachedValue = it
+                            else -> {
+                                // Only store success
+                            }
+                        }
                     }
-                }
-            }
 }
