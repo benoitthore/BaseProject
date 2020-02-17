@@ -2,7 +2,6 @@ package com.benoitthore.base.money
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -31,7 +30,7 @@ class BudgetValuesView @JvmOverloads constructor(
             binding.budgetValues = value
         }
 
-    fun updateViewModel(budgetValues: BudgetValues) {
+    fun updateViewModel(budgetValues: BudgetValues?) {
         binding.budgetValues = budgetValues
     }
 }
@@ -40,14 +39,12 @@ class BudgetValuesView @JvmOverloads constructor(
 fun TextView.fromJson(obj: Any?) {
     if (obj == null) return
 
-    viewScope.cancel()
     viewScope.launch {
         text = withContext(Dispatchers.IO) {
             val data = ignoreUnknownObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj)
             yield()
             data
         }
-
     }
 }
 

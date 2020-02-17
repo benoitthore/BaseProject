@@ -22,7 +22,10 @@ class MoneyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.observe(this, ::update, ::onEvent)
+        viewModel.observe(this) {
+            stateObserver(::update)
+            eventObserver(::onEvent)
+        }
         binding.moneyViewModel = viewModel
     }
 
@@ -41,9 +44,7 @@ class MoneyFragment : Fragment() {
     }
 
     fun update(state: MoneyViewModel.State) {
-        if (state.data != null) {
-            binding.budgetView.updateViewModel(state.data)
-        }
+        binding.budgetView.updateViewModel(state.data)
     }
 }
 
