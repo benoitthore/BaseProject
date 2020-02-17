@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
@@ -22,6 +20,12 @@ android {
         getByName("release") {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
+    }
+    dataBinding {
+        enabled = true
+    }
+    packagingOptions {
+        exclude 'META-INF/core.kotlin_module'
     }
 }
 
@@ -53,6 +57,8 @@ dependencies {
     implementation(Deps.Koin.core)
     implementation(Deps.Koin.android)
     implementation(Deps.Koin.viewModel)
+
+    implementation 'com.benoitthore.backingfield:core:0.9.1'
 
     // Fix room with this https://github.com/Eli-Fox/LEGO-Catalog/blob/master/app/build.gradle
     kapt ("androidx.room:room-compiler:2.2.0")

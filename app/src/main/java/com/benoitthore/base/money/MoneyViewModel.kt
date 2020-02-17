@@ -1,23 +1,38 @@
 package com.benoitthore.base.money
 
-import androidx.lifecycle.*
-import kotlinx.coroutines.*
+import com.benoitthore.base.lib.beginningOfMonth
+import com.benoitthore.base.lib.endOfMonth
 import com.benoitthore.base.lib.mvvm.BaseViewModel
-import com.benoitthore.base.lib.*
-import org.koin.core.Koin
+import com.benoitthore.base.lib.nbOfDays
+import com.benoitthore.base.lib.today
+import com.benoitthore.base.money.data.BudgetValues
+import com.benoitthore.base.money.data.CurrentTimeInfo
 import org.koin.core.KoinComponent
-import kotlin.math.round
 
 class MoneyViewModel : BaseViewModel<MoneyViewModel.State, MoneyViewModel.Event>(), KoinComponent {
 
     override val initialState: State get() = State()
 
-    data class State(val data: List<Any> = emptyList())
+    data class State(val data: BudgetValues? = null)
 
     sealed class Event {
-        object Close : Event()
+        object WrongInput : Event()
+        // Nothing for now
     }
 
+    @JvmOverloads
+    fun onOkayClicked(moneyLeft: String, moneyPerDay: Number = 50) {
+        val moneyLeft = moneyLeft.toFloatOrNull() ?: return emitEvent { Event.WrongInput }
+
+        val budgetValues = calculateCurrentMonthlyBudget(
+                moneyLeft = moneyLeft,
+                startWithMoney = moneyPerDay.toFloat() * (today.endOfMonth - today.beginningOfMonth).nbOfDays,
+                currentTimeInfo = CurrentTimeInfo()
+        )
+        emitState {
+            State(budgetValues)
+        }
+    }
 
 }
 
@@ -25,21 +40,15 @@ class MoneyViewModel : BaseViewModel<MoneyViewModel.State, MoneyViewModel.Event>
 // TODO If I spend £x a day, how many days to I need to get back to diff=0
 // TODO If I spend £x a day during y days, what will be the value of diff in y days
 
-// r for round, rounds up a number to the 2 decimal places and returns a Float
-inline val Number.r get() : Float = round(toFloat() * 100f) / 100f
-
-fun test(
-        moneyLeft: Float = 594.27f,
-        secondAccurate: Boolean = true,
-        startWithMoney: Float = 1550f
-): Float {
-
-    val daysInMonth = (today.endOfMonth - today.beginningOfMonth).nbOfDays
-
-    var date = (today - today.beginningOfMonth).nbOfDays + 1f
-    if (!secondAccurate) {
-        date = date.toInt().toFloat()
-    }
+fun calculateCurrentMonthlyBudget(
+        moneyLeft: Number,
+        startWithMoney: Number,
+        currentTimeInfo: CurrentTimeInfo = CurrentTimeInfo()
+): BudgetValues {
+    val moneyLeft = moneyLeft.toFloat()
+    val startWithMoney = startWithMoney.toFloat()
+    val daysInMonth = currentTimeInfo.daysInMonth.toFloat()
+    val date = currentTimeInfo.date
 
     val daysLeft = daysInMonth - date
 
@@ -49,39 +58,10 @@ fun test(
     val targetMoneyLeft = startWithMoney - (date * targetMoneyPerDay)
 
     val diff = moneyLeft - targetMoneyLeft
-    val recoveringTimeWithOriginalDailyTarget = diff / targetMoneyPerDay
-    val recoveringTimeWithCurrentDailyTarget = diff / currentMoneyPerDay
 
-    println()
-
-    println("daysInMonth = ${daysInMonth.r}")
-    println("date = ${date.r}")
-    println("daysLeft = ${daysLeft.r}")
-
-    println()
-
-    println("target money per day = £${targetMoneyPerDay.r}")
-    println("current money per day = £${currentMoneyPerDay.r}")
-    println("${(100*currentMoneyPerDay/targetMoneyPerDay).r} %")
-
-    println()
-
-    println("money left = £${moneyLeft.r}")
-    println("target money left = £${targetMoneyLeft.r}")
-    println("diff = £${diff.r}")
-
-    println()
-
-    if (recoveringTimeWithOriginalDailyTarget > 0) {
-        println("Time to get back to 0 diff with original daily target: $recoveringTimeWithOriginalDailyTarget")
-    } else {
-        println("Recovering time with original daily target = ${recoveringTimeWithOriginalDailyTarget.r} days")
-    }
-
-    if (recoveringTimeWithCurrentDailyTarget > 0) {
-        println("Time to get back to 0 diff with current daily target: $recoveringTimeWithCurrentDailyTarget")
-    } else {
-        println("Recovering time with current daily target = ${recoveringTimeWithCurrentDailyTarget.r} days")
-    }
-    return diff
+    return BudgetValues(
+            time = BudgetValues.Time(daysInMonth = daysInMonth, date = date, daysLeft = daysLeft),
+            moneyPerDay = BudgetValues.MoneyPerDay(targetMoneyPerDay = targetMoneyPerDay, currentMoneyPerDay = currentMoneyPerDay),
+            moneyPerMonth = BudgetValues.MoneyPerMonth(moneyLeft = moneyLeft, targetMoneyLeft = targetMoneyLeft, diff = diff)
+    )
 }
