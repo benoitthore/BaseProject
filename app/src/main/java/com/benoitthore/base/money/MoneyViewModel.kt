@@ -17,6 +17,7 @@ class MoneyViewModel : BaseViewModel<MoneyViewModel.State, MoneyViewModel.Event>
 
     sealed class Event {
         object WrongInput : Event()
+        object CloseKeyboard : Event()
         // Nothing for now
     }
 
@@ -35,6 +36,7 @@ class MoneyViewModel : BaseViewModel<MoneyViewModel.State, MoneyViewModel.Event>
         emitState {
             State(budgetValues)
         }
+        emitEvent { Event.CloseKeyboard }
     }
 
 }

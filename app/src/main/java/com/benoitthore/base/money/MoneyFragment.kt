@@ -1,18 +1,19 @@
 package com.benoitthore.base.money
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
-import androidx.annotation.IdRes
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import com.benoitthore.base.R
 import com.benoitthore.base.databinding.FragmentMoneyBinding
 import com.benoitthore.base.lib.mvvm.Accumulator
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class MoneyFragment : Fragment() {
 
@@ -29,6 +30,11 @@ class MoneyFragment : Fragment() {
         binding.moneyViewModel = viewModel
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.inputField.showKeyboard()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentMoneyBinding.inflate(inflater, container, false)
                 .also { binding = it }
@@ -39,6 +45,7 @@ class MoneyFragment : Fragment() {
         acc.consume {
             when (it) {
                 MoneyViewModel.Event.WrongInput -> Toast.makeText(requireContext(), "InputError", Toast.LENGTH_SHORT).show()
+                MoneyViewModel.Event.CloseKeyboard -> binding.inputField.closeKeyboard()
             }
         }
     }
@@ -48,3 +55,13 @@ class MoneyFragment : Fragment() {
     }
 }
 
+private fun EditText.closeKeyboard() {
+    val imm = getSystemService(context, InputMethodManager::class.java)
+    imm!!.hideSoftInputFromWindow(windowToken, 0)
+
+}
+
+private fun EditText.showKeyboard() {
+    val imm = getSystemService(context, InputMethodManager::class.java)
+    imm!!.showSoftInput(this, InputMethodManager.SHOW_FORCED)
+}
