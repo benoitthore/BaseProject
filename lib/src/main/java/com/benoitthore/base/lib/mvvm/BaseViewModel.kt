@@ -94,6 +94,3 @@ class Accumulator<T>(private val values: List<T>) {
         }
     }
 }
-
-inline fun <reified T : ViewModel> Fragment.lazyViewModel()
-        = lazy { ViewModelProviders.of(this)[T::class.java] }

@@ -163,6 +163,7 @@ class Deps {
     static class _Koin {
         public static def core = "org.koin:koin-core:$Versions.koin_version"
         public static def android = "org.koin:koin-android:$Versions.koin_version"
+        public static def viewModel = "org.koin:koin-android-viewmodel:$Versions.koin_version"
         public static def coreExt = "org.koin:koin-core-ext:$Versions.koin_version"
         public static def test = "org.koin:koin-test:$Versions.koin_version"
     }

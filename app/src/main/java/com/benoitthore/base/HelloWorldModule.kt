@@ -2,17 +2,18 @@ package com.benoitthore.base
 
 import android.app.Application
 import androidx.room.Room
+import com.benoitthore.base.helloworld.HelloWorldViewModel
 import com.benoitthore.base.helloworld.data.HelloWorldRepo
 import com.benoitthore.base.helloworld.data.db.AppDatabase
 import com.benoitthore.base.helloworld.data.db.NoteMappers
 import kotlinx.coroutines.GlobalScope
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.StringQualifier
 import org.koin.dsl.module
 
-
-object MyKoinModule {
+object HelloWorldModule {
     object Keys {
         val globalScope = StringQualifier("globalScope")
         val noteDtoToModel = StringQualifier("noteDtoToModel")
@@ -26,6 +27,7 @@ object MyKoinModule {
         single(Keys.noteModelToDto) { NoteMappers.modelToDto }
         single { Room.databaseBuilder(get(), AppDatabase::class.java, "myDB").build() }
         single { get<AppDatabase>().noteDao() }
+        viewModel { HelloWorldViewModel() }
     }
 }
 
@@ -36,8 +38,7 @@ class HelloWorldApplication : Application() {
 
         startKoin {
             androidContext(this@HelloWorldApplication)
-            modules(listOf(MyKoinModule.module))
+            modules(listOf(HelloWorldModule.module))
         }
     }
 }
-
