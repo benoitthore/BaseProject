@@ -45,7 +45,6 @@ fun TextView.fromJson(obj: Any?) {
         text = withContext(Dispatchers.IO) {
             val data = ignoreUnknownObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj)
             yield()
-            Log.d("ben_", "done")
             data
         }
 
