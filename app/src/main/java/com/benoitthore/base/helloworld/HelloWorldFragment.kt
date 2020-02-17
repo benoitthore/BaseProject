@@ -24,7 +24,10 @@ class HelloWorldFragment : Fragment(R.layout.hello_world_fragment) {
             viewModel.onAddClicked(editText.text.toString())
         }
 
-        viewModel.observe(this, ::renderView, ::handleEvent)
+        viewModel.observe(this){
+            stateObserver(::renderView)
+            eventObserver(::handleEvent)
+        }
     }
 
     private fun handleEvent(accumulator: Accumulator<HelloWorldViewModel.Event>) {
