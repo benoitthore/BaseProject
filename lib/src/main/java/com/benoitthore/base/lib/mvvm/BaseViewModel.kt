@@ -4,7 +4,6 @@ import android.os.Looper
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
 import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class BaseViewModel<S, E> : ViewModel() {
@@ -73,6 +72,19 @@ abstract class BaseViewModel<S, E> : ViewModel() {
 
         fun setup() {
             observe(lifecycleOwner, stateObserver, eventObserver)
+        }
+    }
+}
+
+class Consumable<T>(private val value: T) {
+    private var handled: AtomicBoolean = AtomicBoolean(false)
+    /**
+     * This function will give you the event value once, then the event becomes used
+     * and further calls to this function will not execute anything
+     */
+    fun consume(block: (T) -> Unit) {
+        if (handled.compareAndSet(false, true)) {
+            block(value)
         }
     }
 }
