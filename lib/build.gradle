@@ -44,6 +44,8 @@ dependencies {
     implementation(Deps.Koin.core)
     implementation(Deps.Koin.android)
 
+    implementation(Deps.BenoitThore.backingField)
+
     // Fix room with this https://github.com/Eli-Fox/LEGO-Catalog/blob/master/app/build.gradle
     kapt ("androidx.room:room-compiler:2.2.0")
     implementation ("androidx.room:room-runtime:2.2.0")
