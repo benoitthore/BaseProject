@@ -9,13 +9,12 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.databinding.BindingAdapter
-import com.benoitthore.backingfield.BackingField
 import com.benoitthore.base.databinding.BudgetValuesViewBinding
+import com.benoitthore.base.lib.viewScope
 import com.benoitthore.base.money.data.BudgetValues
 import com.benoitthore.base.money.data.r
 import com.benoitthore.enamel.core.ignoreUnknownObjectMapper
 import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
 
 class BudgetValuesView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

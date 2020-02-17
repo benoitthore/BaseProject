@@ -58,8 +58,6 @@ dependencies {
     implementation(Deps.Koin.android)
     implementation(Deps.Koin.viewModel)
 
-    implementation 'com.benoitthore.backingfield:core:0.9.1'
-
     // Fix room with this https://github.com/Eli-Fox/LEGO-Catalog/blob/master/app/build.gradle
     kapt ("androidx.room:room-compiler:2.2.0")
     implementation ("androidx.room:room-runtime:2.2.0")
