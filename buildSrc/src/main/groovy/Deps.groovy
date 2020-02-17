@@ -40,6 +40,7 @@ class Deps {
         public static def enamelVersion = "0.9.0-B"
         public static def splittiesVersion = "2.1.1"
         public static def constraintLayoutVersion = "2.0.0-beta3"
+        public static def backingfield = "0.9.1"
     }
 
     public static def Enamel = new _Enamel()
@@ -49,6 +50,11 @@ class Deps {
         public static def layout = "com.benoitthore.enamel:layout:$Versions.enamelVersion"
         public static def android = "com.benoitthore.enamel:layout-android:$Versions.enamelVersion"
         public static def geometryAndroid = "com.benoitthore.enamel:geometry-android:$Versions.enamelVersion"
+    }
+
+    public static def BenoitThore = new _BenoitThore()
+    static class _BenoitThore {
+        public static def backingField = "com.benoitthore.backingfield:core:$Versions.backingfield"
     }
 
     public static def Arch = new _Arch()
