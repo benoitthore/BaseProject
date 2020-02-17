@@ -1,16 +1,16 @@
 package com.benoitthore.base.lib.mvvm
 
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class BaseViewModel<S, E> : ViewModel() {
 
-    private var state = MutableLiveData<S>()
+    private var _state = MutableLiveData<S>()
+    val state: LiveData<S> get() = _state
+
     private var event = MutableLiveData<Accumulator<E>>()
 
     protected abstract val initialState: S
@@ -19,22 +19,26 @@ abstract class BaseViewModel<S, E> : ViewModel() {
 
     fun observe(
             lifecycleOwner: LifecycleOwner,
-            stateObserver: (S) -> Unit,
-            eventObserver: (Accumulator<E>) -> Unit
+            stateObserver: ((S) -> Unit)?,
+            eventObserver: ((Accumulator<E>) -> Unit)?
     ) {
         ensureState()
-        state.observe(lifecycleOwner, Observer { stateObserver(it) })
-        event.observe(lifecycleOwner, Observer { eventObserver(it) })
+        if (stateObserver != null) {
+            _state.observe(lifecycleOwner, Observer { stateObserver(it) })
+        }
+        if (eventObserver != null) {
+            event.observe(lifecycleOwner, Observer { eventObserver(it) })
+        }
     }
 
     private fun ensureState() {
-        if (state.value == null) {
-            state.value = initialState
+        if (_state.value == null) {
+            _state.value = initialState
         }
     }
 
     protected infix fun emitState(func: (S) -> S) {
-        checkAndDoOnMain { state.value = func(state.value ?: initialState) }
+        checkAndDoOnMain { _state.value = func(_state.value ?: initialState) }
     }
 
     protected infix fun emitEvent(event: () -> E) {
@@ -46,6 +50,28 @@ abstract class BaseViewModel<S, E> : ViewModel() {
             block()
         } else {
             viewModelScope.launch(context = dispatchers.Main, block = { block() })
+        }
+    }
+
+    fun observe(lifecycleOwner: LifecycleOwner, block: ObserveBuilder.() -> Unit) {
+        ObserveBuilder(lifecycleOwner).apply(block).setup()
+    }
+
+    inner class ObserveBuilder internal constructor(val lifecycleOwner: LifecycleOwner) {
+
+        private var stateObserver: ((S) -> Unit)? = null
+        private var eventObserver: ((Accumulator<E>) -> Unit)? = null
+
+        fun stateObserver(value: (S) -> Unit) = apply {
+            stateObserver = value
+        }
+
+        fun eventObserver(value: (Accumulator<E>) -> Unit) = apply {
+            eventObserver = value
+        }
+
+        fun setup() {
+            observe(lifecycleOwner, stateObserver, eventObserver)
         }
     }
 }
@@ -64,7 +90,7 @@ class Consumable<T>(private val value: T) {
 }
 
 class Accumulator<T>(private val values: List<T>) {
-    constructor() : this(listOf())
+    constructor() : this(emptyList<T>())
     constructor(value: T) : this(listOf(value))
 
     private var handled = false
