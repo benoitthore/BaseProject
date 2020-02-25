@@ -10,8 +10,8 @@ import androidx.core.view.isGone
 import androidx.databinding.BindingAdapter
 import com.benoitthore.base.databinding.BudgetValuesViewBinding
 import com.benoitthore.base.lib.viewScope
-import com.benoitthore.base.money.data.BudgetValues
-import com.benoitthore.base.money.data.r
+import com.benoitthore.base.money.businesslogic.BudgetValues
+import com.benoitthore.base.money.businesslogic.r
 import com.benoitthore.enamel.core.ignoreUnknownObjectMapper
 import kotlinx.coroutines.*
 

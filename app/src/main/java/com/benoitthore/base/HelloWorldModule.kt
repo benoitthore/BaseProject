@@ -6,6 +6,8 @@ import com.benoitthore.base.helloworld.HelloWorldViewModel
 import com.benoitthore.base.helloworld.data.HelloWorldRepo
 import com.benoitthore.base.helloworld.data.db.AppDatabase
 import com.benoitthore.base.helloworld.data.db.NoteMappers
+import com.benoitthore.base.lib.TimeHelper
+import com.benoitthore.base.money.businesslogic.CalculateCurrentMonthlyBudgetUseCase
 import com.benoitthore.base.money.MoneyViewModel
 import kotlinx.coroutines.GlobalScope
 import org.koin.android.ext.koin.androidContext
@@ -29,6 +31,10 @@ object HelloWorldModule {
         single { Room.databaseBuilder(get(), AppDatabase::class.java, "myDB").build() }
         single { get<AppDatabase>().noteDao() }
         viewModel { HelloWorldViewModel() }
+    }
+
+    val moduleMoney = module {
+        single { CalculateCurrentMonthlyBudgetUseCase() }
         viewModel { MoneyViewModel() }
     }
 }
@@ -40,7 +46,9 @@ class HelloWorldApplication : Application() {
 
         startKoin {
             androidContext(this@HelloWorldApplication)
-            modules(listOf(HelloWorldModule.module))
+            HelloWorldModule.apply {
+                modules(listOf(module, moduleMoney))
+            }
         }
     }
 }

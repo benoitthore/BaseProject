@@ -1,24 +1,20 @@
-package com.benoitthore.base.money.data
+package com.benoitthore.base.money.businesslogic
 
-import androidx.lifecycle.ViewModel
-import com.benoitthore.base.lib.beginningOfMonth
-import com.benoitthore.base.lib.endOfMonth
-import com.benoitthore.base.lib.nbOfDays
-import com.benoitthore.base.lib.today
+import com.benoitthore.base.lib.TimeHelper
 import kotlin.math.round
 
 
 // r for round, rounds up a number to the 2 decimal places and returns a Float
 inline val Number.r get() : Float = round(toFloat() * 100f) / 100f
 
-data class CurrentTimeInfo(
-        val daysInMonth: Number = (today.endOfMonth - today.beginningOfMonth).nbOfDays,
-        val date: Float = (today - today.beginningOfMonth).nbOfDays + 1f
-) {
+class CurrentTimeInfo(daysInMonth: Number? = null, date: Float? = null) : TimeHelper {
+
+    val daysInMonth: Number = daysInMonth ?: (today.endOfMonth - today.beginningOfMonth).nbOfDays
+    val date: Float = date ?: (today - today.beginningOfMonth).nbOfDays + 1f
     /**
      * Returns a copy of this object with the date set to beginning of day (midnight)
      */
-    fun precisionDay() = copy(date = date.toInt().toFloat())
+    fun precisionDay() = CurrentTimeInfo(daysInMonth = daysInMonth, date = date.toInt().toFloat())
 }
 
 data class BudgetValues(val time: Time,
