@@ -21,8 +21,8 @@ class MoneyViewModel : BaseViewModel<MoneyViewModel.State, MoneyViewModel.Event>
         // Nothing for now
     }
 
-    @JvmOverloads
-    fun onOkayClicked(moneyLeft: String, moneyPerDay: Number = 50) {
+
+    fun onOkayClicked(moneyLeft: String, monthlyBudget: String) {
         val moneyLeft = moneyLeft.toFloatOrNull() ?: return run {
             emitEvent { Event.WrongInput }
             emitState { State(null) }
@@ -30,7 +30,8 @@ class MoneyViewModel : BaseViewModel<MoneyViewModel.State, MoneyViewModel.Event>
 
         val budgetValues = calculateCurrentMonthlyBudget(
                 moneyLeft = moneyLeft,
-                startWithMoney = moneyPerDay.toFloat() * (today.endOfMonth - today.beginningOfMonth).nbOfDays,
+//                startWithMoney = moneyPerDay.toFloat() * (today.endOfMonth - today.beginningOfMonth).nbOfDays,
+                startWithMoney = monthlyBudget.toFloat(),
                 currentTimeInfo = CurrentTimeInfo()
         )
         emitState {
