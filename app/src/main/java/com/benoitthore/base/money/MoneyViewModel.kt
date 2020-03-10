@@ -9,6 +9,7 @@ import com.benoitthore.enamel.core.print
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.lang.StringBuilder
+import kotlin.math.absoluteValue
 
 class MoneyViewModel : BaseViewModel<MoneyViewModel.State, MoneyViewModel.Event>(), KoinComponent {
 
@@ -44,13 +45,23 @@ class MoneyViewModel : BaseViewModel<MoneyViewModel.State, MoneyViewModel.Event>
                             BudgetItem("Money Left", budgetValues.moneyPerMonth.moneyLeft.toCurrency()),
                             BudgetItem("Target money Left", budgetValues.moneyPerMonth.targetMoneyLeft.toCurrency()),
                             BudgetItem("Difference", budgetValues.moneyPerMonth.diff.toCurrency()),
-                            BudgetItem("Recovering time", budgetValues.recoveringTime.recoveringTimeWithCurrentDailyTarget.toTime())
+
+
+                            budgetValues.recoveringTime.recoveringTimeWithOriginalDailyTarget.let { recoveringTime ->
+                                BudgetItem(if (recoveringTime > 0) "Extra time" else "Recovering time", recoveringTime.absoluteValue.toTime())
+                            }
                     ))
         }
         emitEvent { Event.CloseKeyboard }
     }
 
-    private fun Number.toCurrency() = "$currencySymbol${this.r}"
+    private fun Number.toCurrency() = r.let {
+        val s = if (it < 0) {
+            "-"
+        } else ""
+
+        s + "$currencySymbol${it.absoluteValue}"
+    }
 
     private fun Number.toTime() = toTimeList().joinToString(separator = ", ")
     private fun Number.toTimeList(): List<String> {

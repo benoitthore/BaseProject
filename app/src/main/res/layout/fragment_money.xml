@@ -60,9 +60,7 @@
                 android:maxLines="1"
                 android:minWidth="@dimen/edit_text_min_width"
                 android:text="" />
-
         </LinearLayout>
-
 
         <Button
             android:id="@+id/generate_button"
@@ -76,7 +74,8 @@
             android:layout_height="16dp" />
 
         <TextView
-            android:text="@{header}"
+            android:visibility='@{"".equals(header) ? View.INVISIBLE : View.VISIBLE}'
+            android:text="@{`Money/day: `+header}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -92,6 +91,7 @@
     </LinearLayout>
 
     <data>
+        <import type="android.view.View"/>
 
         <variable
             name="moneyViewModel"
