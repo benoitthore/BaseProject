@@ -3,90 +3,103 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
-        android:fillViewport="true"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:text="Monthly budget:" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Monthly budget:" />
-
-                <Space
-                    android:layout_width="16dp"
-                    android:layout_height="16dp" />
-
-                <EditText
-                    android:id="@+id/monthlyBudgetInputField"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"
-                    android:minWidth="@dimen/edit_text_min_width"
-                    android:text="500" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Money left:" />
-
-                <Space
-                    android:layout_width="16dp"
-                    android:layout_height="16dp" />
-
-                <EditText
-                    android:id="@+id/moneyLeftInputField"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"
-                    android:minWidth="@dimen/edit_text_min_width"
-                    android:text="" />
-
-            </LinearLayout>
             <Space
                 android:layout_width="16dp"
                 android:layout_height="16dp" />
 
-            <Button
-                android:id="@+id/generate_button"
+
+            <EditText
+                android:id="@+id/monthlyBudgetInputField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{()->moneyViewModel.onOkayClicked(moneyLeftInputField.getText().toString(),monthlyBudgetInputField.getText().toString())}"
-                android:text="Generate" />
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:minWidth="@dimen/edit_text_min_width"
+                android:text="500" />
 
-            <com.benoitthore.base.money.BudgetValuesView
-                android:id="@+id/budget_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </LinearLayout>
-    </ScrollView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Money left:" />
+
+            <Space
+                android:layout_width="16dp"
+                android:layout_height="16dp" />
+
+            <EditText
+                android:id="@+id/moneyLeftInputField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:minWidth="@dimen/edit_text_min_width"
+                android:text="" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/generate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->moneyViewModel.onOkayClicked(moneyLeftInputField.getText().toString(),monthlyBudgetInputField.getText().toString())}"
+            android:text="Generate" />
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:text="@{header}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="16dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/budget_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
 
     <data>
 
         <variable
             name="moneyViewModel"
             type="com.benoitthore.base.money.MoneyViewModel" />
+
+        <variable
+            name="header"
+            type="String" />
     </data>
 
 

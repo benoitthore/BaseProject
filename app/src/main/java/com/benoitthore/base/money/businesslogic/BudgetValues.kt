@@ -27,10 +27,6 @@ data class BudgetValues(val time: Time,
             recoveringTimeWithCurrentDailyTarget = moneyPerMonth.diff / moneyPerDay.currentMoneyPerDay
     )
 
-    fun round(): BudgetValues = copy(
-            moneyPerDay = moneyPerDay.round(),
-            moneyPerMonth = moneyPerMonth.round())
-
     data class Time(
             val daysInMonth: Float,
             val date: Float,
@@ -41,24 +37,14 @@ data class BudgetValues(val time: Time,
             val targetMoneyPerDay: Float,
             val currentMoneyPerDay: Float
     ) {
-        val ratio: Float = (100 * currentMoneyPerDay / targetMoneyPerDay)
-        fun round() = copy(
-                targetMoneyPerDay = targetMoneyPerDay.r,
-                currentMoneyPerDay = currentMoneyPerDay.r
-        )
+        val ratio: Float = currentMoneyPerDay / targetMoneyPerDay
     }
 
     data class MoneyPerMonth(
             val moneyLeft: Float,
             val targetMoneyLeft: Float,
             val diff: Float
-    ) {
-        fun round() = copy(
-                moneyLeft = moneyLeft.r,
-                targetMoneyLeft = targetMoneyLeft.r,
-                diff = diff.r
-        )
-    }
+    )
 
     data class RecoveringTime(
             val recoveringTimeWithOriginalDailyTarget: Float,

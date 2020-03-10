@@ -1,6 +1,5 @@
 package com.benoitthore.base.money
 
-import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -9,18 +8,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.benoitthore.base.BuildConfig
+import com.benoitthore.base.R
+import com.benoitthore.base.databinding.BudgetValuesItemBinding
 import com.benoitthore.base.databinding.FragmentMoneyBinding
 import com.benoitthore.base.lib.mvvm.Accumulator
-import kotlinx.android.synthetic.main.fragment_money.*
+import com.benoitthore.enamel.core.print
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.Section
+import com.xwray.groupie.databinding.BindableItem
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.io.File
 
 
 val Number.dp: Float
@@ -32,6 +37,7 @@ class MoneyFragment : Fragment() {
 
     val viewModel by viewModel<MoneyViewModel>()
 
+    private val adapter = GroupAdapter<GroupieViewHolder>()
     private inline val isChloe get() = BuildConfig.Chloe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,7 +51,7 @@ class MoneyFragment : Fragment() {
         binding.monthlyBudgetInputField.setText(
                 if (isChloe) "500" else "1500"
         )
-
+        binding.budgetRecyclerView.adapter = adapter
     }
 
     override fun onResume() {
@@ -81,21 +87,25 @@ class MoneyFragment : Fragment() {
     }
 
     fun update(state: MoneyViewModel.State) {
-        binding.budgetView.updateViewModel(state.data)
+        binding.header = state.header
+        adapter.clear()
+        adapter.addAll(
+                state.list.map {
+                    BudgetItem(it)
+                }
+        )
+    }
+
+    class BudgetItem(val stateItem: MoneyViewModel.BudgetItem) : BindableItem<BudgetValuesItemBinding>() {
+        init {
+            stateItem.print
+        }
+        override fun getLayout(): Int = R.layout.budget_values_item
+        override fun bind(viewBinding: BudgetValuesItemBinding, position: Int) {
+            viewBinding.budgetItem = stateItem
+        }
     }
 }
 
-private fun EditText.closeKeyboard() {
-    val imm = getSystemService(context, InputMethodManager::class.java)
-    imm!!.hideSoftInputFromWindow(windowToken, 0)
 
-}
 
-private fun EditText.showKeyboard() {
-    val imm = getSystemService(context, InputMethodManager::class.java)
-    imm!!.showSoftInput(this, InputMethodManager.SHOW_FORCED)
-}
-
-fun main() {
-
-}
