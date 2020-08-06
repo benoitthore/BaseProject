@@ -1,7 +1,7 @@
 package com.benoitthore.base.lib.mvvm
 
-import android.os.Looper
 import androidx.lifecycle.*
+import com.benoitthore.base.lib.MyDispatchers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
@@ -11,11 +11,14 @@ abstract class BaseViewModel<S, E> : ViewModel() {
     private var _state = MutableLiveData<S>()
     val state: LiveData<S> get() = _state
 
-    private var event = MutableLiveData<Accumulator<E>>()
+    private var _event = MutableLiveData<Accumulator<E>>()
+    val lastEvent get() = _event.value?.lastValue
 
     protected abstract val initialState: S
 
-    protected open val dispatchers = Dispatchers
+    fun observe(lifecycleOwner: LifecycleOwner, block: ObserveBuilder.() -> Unit) {
+        ObserveBuilder(lifecycleOwner).apply(block).setup()
+    }
 
     fun observe(
             lifecycleOwner: LifecycleOwner,
@@ -27,7 +30,7 @@ abstract class BaseViewModel<S, E> : ViewModel() {
             _state.observe(lifecycleOwner, Observer { stateObserver(it) })
         }
         if (eventObserver != null) {
-            event.observe(lifecycleOwner, Observer { eventObserver(it) })
+            _event.observe(lifecycleOwner, Observer { eventObserver(it) })
         }
     }
 
@@ -42,19 +45,11 @@ abstract class BaseViewModel<S, E> : ViewModel() {
     }
 
     protected infix fun emitEvent(event: () -> E) {
-        checkAndDoOnMain { this.event.value = (this.event.value ?: Accumulator()) + event() }
+        checkAndDoOnMain { this._event.value = (this._event.value ?: Accumulator()) + event() }
     }
 
-    private fun checkAndDoOnMain(block: () -> Unit) {
-        if (Looper.getMainLooper() === Looper.myLooper()) {
-            block()
-        } else {
-            viewModelScope.launch(context = dispatchers.Main, block = { block() })
-        }
-    }
-
-    fun observe(lifecycleOwner: LifecycleOwner, block: ObserveBuilder.() -> Unit) {
-        ObserveBuilder(lifecycleOwner).apply(block).setup()
+    private inline fun checkAndDoOnMain(crossinline block: () -> Unit) {
+        viewModelScope.launch(context = Dispatchers.Main, block = { block() })
     }
 
     inner class ObserveBuilder internal constructor(val lifecycleOwner: LifecycleOwner) {
@@ -78,6 +73,7 @@ abstract class BaseViewModel<S, E> : ViewModel() {
 
 class Consumable<T>(private val value: T) {
     private var handled: AtomicBoolean = AtomicBoolean(false)
+
     /**
      * This function will give you the event value once, then the event becomes used
      * and further calls to this function will not execute anything
@@ -93,7 +89,11 @@ class Accumulator<T>(private val values: List<T>) {
     constructor() : this(emptyList<T>())
     constructor(value: T) : this(listOf(value))
 
+    val lastValue: T? get() = values.lastOrNull()
+
+
     private var handled = false
+
     /**
      * This function will call the provided block with the event values stored in
      * this accumulator one by one, and each value will only be given once and only once.

@@ -1,8 +1,9 @@
-package com.benoitthore.base
+package com.benoitthore.github
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.benoitthore.base.helloworld.HelloWorldFragment
+import com.benoitthore.base.R
+import com.benoitthore.github.ui.GithubFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.root_view, HelloWorldFragment())
+                .replace(R.id.root_view, GithubFragment())
                 .commit()
     }
 }

@@ -2,8 +2,7 @@ package com.benoitthore.base.helloworld.data
 
 import com.benoitthore.base.HelloWorldModule
 import com.benoitthore.base.helloworld.data.db.*
-import com.benoitthore.base.lib.repo.Mapper
-import com.benoitthore.base.lib.repo.invoke
+import com.benoitthore.base.lib.data.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch

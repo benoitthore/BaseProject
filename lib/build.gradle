@@ -19,6 +19,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -30,13 +31,6 @@ android {
 }
 
 dependencies {
-    implementation(Deps.Enamel.core)
-    implementation(Deps.Enamel.geometryAndroid)
-    implementation(Deps.Enamel.geometry)
-    implementation(Deps.Enamel.layout)
-
-    implementation(Deps.Korlibs.klock)
-
     implementation(Deps.Coroutines.core)
     implementation(Deps.Coroutines.android)
 
@@ -48,25 +42,12 @@ dependencies {
 
     implementation(Deps.Jackson.core)
     implementation(Deps.Jackson.kotlin)
+    implementation(Deps.XDependencies.recyclerView)
 
     implementation(Deps.Koin.core)
     implementation(Deps.Koin.android)
 
     implementation(Deps.BenoitThore.backingField)
-
-    // Fix room with this https://github.com/Eli-Fox/LEGO-Catalog/blob/master/app/build.gradle
-    kapt ("androidx.room:room-compiler:2.2.0")
-    implementation ("androidx.room:room-runtime:2.2.0")
-    implementation ("androidx.room:room-ktx:2.2.0")
-
-    implementation(Deps.Room.runtime)
-//    implementation(Deps.Room.coroutines)
-    kapt(Deps.Room.kapt)
-
-    implementation(Deps.XDependencies.core)
-    implementation(Deps.XDependencies.appcompat)
-    implementation(Deps.XDependencies.recyclerView)
-    implementation(Deps.XDependencies.constraintLayout)
 
     testImplementation("junit:junit:4.12")
     androidTestImplementation("com.android.support.test:runner:1.0.2")

@@ -5,10 +5,17 @@ import com.benoitthore.backingfield.BackingField
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
+data class MyDispatchers(
+        val main: CoroutineDispatcher = Dispatchers.Main,
+        val io: CoroutineDispatcher = Dispatchers.IO,
+        val unconfined: CoroutineDispatcher = Dispatchers.Unconfined,
+        val default: CoroutineDispatcher = Dispatchers.Default
+)
+
 
 val View.viewScope: CoroutineScope by BackingField {
 
-    val scope = ReusableCoroutineScope(SupervisorJob() + Dispatchers.Main)
+    val scope = ReusableContextScope(SupervisorJob() + Dispatchers.Main)
 
     addOnAttachStateChangeListener(
             object : View.OnAttachStateChangeListener {
@@ -23,9 +30,9 @@ val View.viewScope: CoroutineScope by BackingField {
     return@BackingField scope
 }
 
-internal class ReusableContextScope(
+class ReusableContextScope(
         context: CoroutineContext,
-        private val newJob: () -> Job
+        private val newJob: () -> Job = { SupervisorJob() }
 ) : CoroutineScope {
     private var reusableContext: CoroutineContext = context
 
@@ -38,12 +45,3 @@ internal class ReusableContextScope(
         }
 }
 
-/**
- * Creates a scope that can be cancelled and then restarted
- */
-@Suppress("FunctionName")
-fun ReusableCoroutineScope(
-        context: CoroutineContext,
-        newJob: () -> Job = { SupervisorJob() }
-): CoroutineScope =
-        ReusableContextScope(context, newJob)

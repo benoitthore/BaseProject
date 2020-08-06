@@ -8,11 +8,11 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion SdkSupportVersion.compileSdkVersion
     defaultConfig {
-        applicationId  "com.benoitthore.base"
+        applicationId "com.benoitthore.money"
         minSdkVersion SdkSupportVersion.minSdkVersion
         targetSdkVersion SdkSupportVersion.targetSdkVersion
-        versionCode  1
-        versionName  "1.0"
+        versionCode 1
+        versionName "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -21,26 +21,31 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
-    dataBinding {
+    viewBinding {
         enabled = true
     }
     packagingOptions {
         exclude 'META-INF/core.kotlin_module'
+    }
+
+    flavorDimensions "default"
+    androidExtensions {
+        experimental = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
 dependencies {
 
     implementation(project(":lib"))
-    implementation(Deps.Enamel.core)
-    implementation(Deps.Enamel.geometryAndroid)
-    implementation(Deps.Enamel.geometry)
-    implementation(Deps.Enamel.layout)
-
-//    implementation(Deps.Enamel.android)
-//    implementation(Deps.Splitties.viewDsl)
-
-    implementation(Deps.Korlibs.klock)
 
     implementation(Deps.Coroutines.core)
     implementation(Deps.Coroutines.android)
@@ -66,13 +71,18 @@ dependencies {
     implementation(Deps.Room.runtime)
 //    implementation(Deps.Room.coroutines)
     kapt(Deps.Room.kapt)
+    implementation(Deps.Mockito.core)
+    implementation(Deps.Mockito.kotlin)
 
     implementation(Deps.XDependencies.core)
     implementation(Deps.XDependencies.appcompat)
     implementation(Deps.XDependencies.recyclerView)
     implementation(Deps.XDependencies.constraintLayout)
+    implementation(Deps.XDependencies.cardview)
 
     testImplementation("junit:junit:4.12")
+    testImplementation(Deps.Coroutines.test)
+    testImplementation(Deps.Lifecycle.test)
     androidTestImplementation("com.android.support.test:runner:1.0.2")
     androidTestImplementation("com.android.support.test.espresso:espresso-core:3.0.2")
 }

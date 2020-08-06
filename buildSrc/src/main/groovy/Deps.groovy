@@ -9,9 +9,9 @@ class Deps {
         public static def okHttpVersion = "3.9.1"
         public static def espressoVersion = "2.2.2"
         public static def ankoVersion = "0.10.8"
-        public static def retrofitVersion = "2.4.0"
+        public static def retrofitVersion = "2.9.0"
         public static def robolectricVersion = "3.5.1"
-        public static def mockitoVersion = "2.8.9"
+        public static def mockitoVersion = "3.4.4"
         public static def constraintLayout = "1.1.3"
         public static def rxJavaVersion = "2.2.0"
         public static def rxAndroidVersion = "2.0.0"
@@ -115,6 +115,7 @@ class Deps {
         public static def retrofit = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
         public static def core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$Versions.coroutineVersion"
         public static def android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$Versions.coroutineVersion"
+        public static def test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$Versions.coroutineVersion"
     }
 
     public static def Mockito = new _Mockito()
@@ -122,7 +123,6 @@ class Deps {
         public static def core = "org.mockito:mockito-core:$Versions.mockitoVersion"
         public static def android = "org.mockito:mockito-android:$Versions.mockitoVersion"
         public static def kotlin = "com.nhaarman:mockito-kotlin:$Versions.mockitoKotlinVersion"
-
     }
 
     public static def RxJava = new _RxJava()
@@ -258,5 +258,6 @@ class Deps {
     static class _Lifecycle {
         public static def lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
         public static def archLifecycle = "android.arch.lifecycle:extensions:1.1.1"
+        public static def test = "androidx.arch.core:core-testing:2.0.1"
     }
 }

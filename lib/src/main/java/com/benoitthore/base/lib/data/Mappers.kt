@@ -1,4 +1,4 @@
-package com.benoitthore.base.lib.repo
+package com.benoitthore.base.lib.data
 
 typealias Mapper<I, O> = (I) -> O
 

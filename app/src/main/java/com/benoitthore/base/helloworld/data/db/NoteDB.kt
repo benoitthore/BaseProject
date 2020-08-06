@@ -1,7 +1,7 @@
 package com.benoitthore.base.helloworld.data.db
 
 import androidx.room.*
-import com.benoitthore.base.lib.repo.Mapper
+import com.benoitthore.base.lib.data.Mapper
 import kotlinx.coroutines.flow.Flow
 
 // https://medium.com/mindorks/room-kotlin-android-architecture-components-71cad5a1bb35

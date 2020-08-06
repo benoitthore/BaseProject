@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Kotlin DSL Android Studio Sample</string>
+    <string name="app_name">Github repositories</string>
     <string name="add">Add</string>
+
+    <string name="network_error">Check your network connection and try again</string>
+    <string name="api_error">Please retry in a few seconds. If the problem persists, contact customer support</string>
+
 </resources>
