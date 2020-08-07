@@ -1,13 +1,10 @@
 package com.benoitthore.sonoff.ui
 
 import androidx.lifecycle.viewModelScope
+import com.benoitthore.base.lib.data.ApiResponse
 import com.benoitthore.base.lib.mvvm.BaseViewModel
-import com.benoitthore.sonoff.data.SonoffLocalRepo
-import com.benoitthore.sonoff.data.SonoffRepo
-import com.benoitthore.sonoff.data.SonoffResponse
-import com.benoitthore.sonoff.data.asSonoffDevice
+import com.benoitthore.sonoff.data.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -21,21 +18,30 @@ class SonoffViewModel : BaseViewModel<SonoffViewModel.State, SonoffViewModel.Eve
 
     object Event
 
-    private val repo: SonoffRepo = SonoffLocalRepo()
+    // TODO Inject
+    private val repo: SonoffRepository = SonoffRepositoryImpl()
     private val device = "192.168.1.144".asSonoffDevice()
+
+    private suspend inline fun getDeviceManagerOrEmitError(block: (SonoffDeviceManager) -> Unit) {
+        repo.getDeviceManager(device)?.let(block)
+                ?: emitState { State.Error("Device not found $device") }
+    }
+
     private var job: Job? = null
 
     init {
         emitState { State.Loading }
-        job =viewModelScope.launch(Dispatchers.IO) {
-            emit(repo.getState(device))
+        job = viewModelScope.launch(Dispatchers.IO) {
+            getDeviceManagerOrEmitError { deviceManager ->
+                emit(deviceManager.getState())
+            }
         }
     }
 
-    private fun emit(apiResponse: SonoffResponse<Boolean>) {
+    private fun emit(apiResponse: ApiResponse<PowerData>) {
         val state = when (apiResponse) {
-            is SonoffResponse.Success -> State.Success(apiResponse.value)
-            is SonoffResponse.Error -> State.Error(apiResponse.exception.toString())
+            is ApiResponse.Success -> State.Success(apiResponse.value.isOn)
+            else -> State.Error()
         }
         emitState { state }
     }
@@ -46,7 +52,10 @@ class SonoffViewModel : BaseViewModel<SonoffViewModel.State, SonoffViewModel.Eve
         }
         emitState { State.Loading }
         job = viewModelScope.launch(Dispatchers.IO) {
-            emit(repo.switch(device))
+            getDeviceManagerOrEmitError { deviceManager ->
+                emit(deviceManager.toggle())
+
+            }
         }
     }
 
