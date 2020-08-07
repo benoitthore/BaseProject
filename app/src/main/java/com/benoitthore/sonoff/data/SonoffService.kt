@@ -2,18 +2,18 @@ package com.benoitthore.sonoff.data
 
 fun <T> Result<T?>.toSonoffResponse(): SonoffResponse<T> =
         getOrNull()?.let { SonoffResponse.Success(it) }
-                ?: SonoffResponse.Error()
+                ?: SonoffResponse.Error(exceptionOrNull())
 
 sealed class SonoffResponse<T> {
     data class Success<T>(val value: T) : SonoffResponse<T>()
-    class Error<T> : SonoffResponse<T>()
+    data class Error<T>(val exception: Throwable? = null) : SonoffResponse<T>()
 }
 
 interface SonoffService {
-    suspend fun deviceExists(id: SonoffDeviceId): Boolean
-    suspend fun getState(deviceId: SonoffDeviceId): SonoffResponse<Boolean>
+    fun deviceExists(id: SonoffDeviceId): Boolean
+    fun getState(deviceId: SonoffDeviceId): SonoffResponse<Boolean>
 
-    suspend fun switch(deviceId: SonoffDeviceId): SonoffResponse<Boolean>
+    fun switch(deviceId: SonoffDeviceId): SonoffResponse<Boolean>
 
 }
 
