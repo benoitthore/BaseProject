@@ -1,12 +1,6 @@
 package com.benoitthore.sonoff.data
 
 import com.benoitthore.base.lib.data.*
-import com.benoitthore.github.model.GithubService
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.module.kotlin.readValue
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import org.intellij.lang.annotations.Language
 
 interface SonoffDeviceManager {
 
@@ -41,6 +35,7 @@ private class SonoffDeviceManagerImpl(val service: SonoffService, val dtoMapper:
 interface SonoffRepository {
     val deviceList: List<SonoffDeviceManager>
     suspend fun getDeviceManager(id: SonoffDeviceId): SonoffDeviceManager?
+    suspend fun addDeviceManager(id: SonoffDeviceId): SonoffDeviceManager?
     fun removeDevice(id: SonoffDeviceId): Boolean
 }
 
@@ -53,11 +48,16 @@ class SonoffRepositoryImpl(private val deviceManagerBuilder: (SonoffDeviceId) ->
     override val deviceList: List<SonoffDeviceManager>
         get() = _deviceList
 
-    override suspend fun getDeviceManager(id: SonoffDeviceId): SonoffDeviceManager? = map
-            .getOrPut(id) { deviceManagerBuilder(id) }
-            .takeIf { it.getState() is ApiResponse.Success }
+    override suspend fun getDeviceManager(id: SonoffDeviceId): SonoffDeviceManager? =
+            deviceManagerBuilder(id).takeIf { it.isReachable() }
 
+    override suspend fun addDeviceManager(id: SonoffDeviceId): SonoffDeviceManager? =
+            getDeviceManager(id)?.also { deviceManager ->
+                        map[id] = deviceManager
+                    }
 
     override fun removeDevice(id: SonoffDeviceId): Boolean = map.remove(id) != null
+
+    private suspend fun SonoffDeviceManager.isReachable(): Boolean = getState() !is ApiResponse.Success
 
 }
