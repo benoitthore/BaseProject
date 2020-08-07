@@ -1,11 +1,12 @@
 package com.benoitthore.sonoff.data
 
-import com.benoitthore.base.lib.data.ApiResponse
-import com.benoitthore.base.lib.data.Mapper
-import com.benoitthore.base.lib.data.createService
-import com.benoitthore.base.lib.data.toApiResponse
+import com.benoitthore.base.lib.data.*
 import com.benoitthore.github.model.GithubService
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.module.kotlin.readValue
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import org.intellij.lang.annotations.Language
 
 interface SonoffDeviceManager {
 
@@ -59,21 +60,4 @@ class SonoffRepositoryImpl(private val deviceManagerBuilder: (SonoffDeviceId) ->
 
     override fun removeDevice(id: SonoffDeviceId): Boolean = map.remove(id) != null
 
-}
-
-fun main() {
-    val id = "192.168.1.144".asSonoffDevice()
-    runBlocking {
-
-        val service = createService<SonoffService>("http://${id.id}")
-        println(service.test().body()?.string())
-        // TODO Fix this, it returns d .POWER = null
-        println(service.getPowerState().body())
-
-        return@runBlocking
-        val managerBuilder = SonoffDeviceManagerBuilder(SonoffServiceBuilder(), PowerResponseMapper)
-        val manager = managerBuilder(id)
-        val state = manager.getState()
-        println(state)
-    }
 }

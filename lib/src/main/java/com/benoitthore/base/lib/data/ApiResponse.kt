@@ -4,9 +4,9 @@ package com.benoitthore.base.lib.data
 import retrofit2.Response
 
 sealed class ApiResponse<T> {
-    class Success<T>(val value: T) : ApiResponse<T>()
+    data class Success<T>(val value: T) : ApiResponse<T>()
 
-    class ApiError<T>(val message: String) : ApiResponse<T>()
+    data class ApiError<T>(val message: String) : ApiResponse<T>()
 
     class NetworkError<T> : ApiResponse<T>()
 }
