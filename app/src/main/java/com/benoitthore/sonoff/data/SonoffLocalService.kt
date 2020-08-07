@@ -46,14 +46,16 @@ class SonoffLocalService(val sonoffResponseParser: LocalSonoffApiHelper = LocalS
             doRequestWithParams(deviceId, sonoffResponseParser.SWITCH_PARAMS)
 
     private suspend fun doRequestWithParams(id: SonoffDeviceId, params: String) =
-            runCatching { client.asyncRequest(buildRequest(id, params)).isOn() }.toSonoffResponse()
+            runCatching {
+                client.asyncRequest(buildRequest(id, params))
+                        .isOn()
+            }.toSonoffResponse()
 
     private fun Response.isOn(): Boolean? = body()?.string()?.let {
         sonoffResponseParser.isOn(it)
     }
 }
 
-@SuppressLint("Assert")
 fun main() {
     runBlocking {
         val d1 = "192.168.1.144".asSonoffDevice()
