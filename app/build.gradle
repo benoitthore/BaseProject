@@ -8,7 +8,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion SdkSupportVersion.compileSdkVersion
     defaultConfig {
-        applicationId "com.benoitthore.money"
+        applicationId "com.benoitthore.sonoff"
         minSdkVersion SdkSupportVersion.minSdkVersion
         targetSdkVersion SdkSupportVersion.targetSdkVersion
         versionCode 1
