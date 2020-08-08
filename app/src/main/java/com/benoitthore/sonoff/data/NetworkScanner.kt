@@ -27,8 +27,7 @@ class IsConnectedToWifi(val context: Context) : () -> Boolean {
 
 }
 
-// TODO Inject
-class GetGatewayIpAddress(private val context: Context, val isConnectedToWifi: () -> Boolean ) : () -> String? {
+class GetGatewayIpAddress(private val context: Context, val isConnectedToWifi: () -> Boolean) : () -> String? {
     override fun invoke(): String? {
         if (!isConnectedToWifi()) return null
         val wifiMgr = context.applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
@@ -42,17 +41,10 @@ class NetworkScannerImpl(val deviceManagerBuilder: DeviceManagerBuilder,
 
     override suspend fun scan(): List<SonoffDeviceId> {
         val base = getGatewayIpAddress().let { it.substring(0, it.lastIndexOf('.') + 1) }
-        return coroutineScope {
+
+        return supervisorScope {
             (0..255).asSequence()
-                    .map { "$base$it" }
-                    .map {
-                        val id = it.asSonoffDevice()
-                        async {
-                            withTimeoutOrNull(1000L){
-                                id to testIp(id)
-                            }
-                        }
-                    }
+                    .map { testIp("$base$it") }
                     .toList()
                     .awaitAll()
                     .filterNotNull()
@@ -61,7 +53,15 @@ class NetworkScannerImpl(val deviceManagerBuilder: DeviceManagerBuilder,
         }
     }
 
-    private suspend fun testIp(id: SonoffDeviceId): Boolean = deviceManagerBuilder(id).isReachable()
+    private fun CoroutineScope.testIp(it: String): Deferred<Pair<SonoffDeviceId, Boolean>?> {
+        val id = it.asSonoffDevice()
+        return async {
+            withTimeoutOrNull(1000L) {
+                id to deviceManagerBuilder(id).isReachable()
+            }
+        }
+    }
+
 }
 
 //fun main() {
