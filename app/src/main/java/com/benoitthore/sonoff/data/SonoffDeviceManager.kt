@@ -1,6 +1,7 @@
 package com.benoitthore.sonoff.data
 
 import com.benoitthore.base.lib.data.*
+import kotlinx.coroutines.runBlocking
 import java.net.InetAddress
 
 interface SonoffDeviceManager {
@@ -15,6 +16,11 @@ interface SonoffDeviceManager {
 
     suspend fun turnOff() = turn(false)
     suspend fun turnOn() = turn(true)
+
+    suspend fun isReachable(): Boolean {
+        val state = runCatching { getState() }.getOrNull()
+        return state is ApiResponse.Success
+    }
 }
 
 class SonoffServiceBuilder : (SonoffDeviceId) -> SonoffService {
@@ -53,7 +59,6 @@ interface SonoffRepository {
 }
 
 // TODO Inject
-// TODO handle get/set hostname
 // TODO Scan network for hosts and return a map of HostNames to SonoffDeviceId (IP)
 class SonoffRepositoryImpl(
         private val deviceManagerBuilder: (SonoffDeviceId) -> SonoffDeviceManager
@@ -68,7 +73,10 @@ class SonoffRepositoryImpl(
         get() = _deviceList
 
     override suspend fun getDeviceManager(id: SonoffDeviceId): SonoffDeviceManager? =
-            deviceManagerBuilder(id).takeIf { it.isReachable() }
+            deviceManagerBuilder(id)
+                    .takeIf {
+                        it.isReachable()
+                    }
 
     override suspend fun addDeviceManager(id: SonoffDeviceId): SonoffDeviceManager? =
             getDeviceManager(id)?.also { deviceManager ->
@@ -76,13 +84,11 @@ class SonoffRepositoryImpl(
             }
 
     override fun removeDevice(id: SonoffDeviceId): Boolean = map.remove(id) != null
-
-    private suspend fun SonoffDeviceManager.isReachable(): Boolean = getState() !is ApiResponse.Success
-
 }
 
 fun main() {
-    println(
-            InetAddress.getByName("Sonoff1")
-    )
+    runBlocking {
+        val state = SonoffDeviceManagerBuilder(SonoffServiceBuilder(), PowerResponseMapper, HostNameResponseMapper).invoke("192.168.1.144".asSonoffDevice()).getState()
+        println(state)
+    }
 }

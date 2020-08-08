@@ -15,6 +15,13 @@ class SOnOffFragment : Fragment(R.layout.sonoff) {
 
         val button = view.findViewById<Button>(R.id.on_off_button)
 
+//        GlobalScope.launch(Dispatchers.IO) {
+//            val ip = GetIpAddress(requireContext()).invoke()
+//            withContext(Dispatchers.Main) {
+//                button.text = ip ?: "Not connected to Wifi"
+//            }
+//        }
+
         button.setOnClickListener {
             vm.switch()
         }
