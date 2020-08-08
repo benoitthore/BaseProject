@@ -23,7 +23,8 @@ interface SonoffDeviceManager {
     }
 }
 
-class SonoffServiceBuilder : (SonoffDeviceId) -> SonoffService {
+typealias SonoffServiceBuilder = (SonoffDeviceId) -> SonoffService
+class SonoffServiceBuilderImpl : SonoffServiceBuilder {
     override fun invoke(id: SonoffDeviceId): SonoffService = createService("http://${id.id}")
 }
 
@@ -58,11 +59,12 @@ interface SonoffRepository {
     fun removeDevice(id: SonoffDeviceId): Boolean
 }
 
+typealias DeviceManagerBuilder = (SonoffDeviceId) -> SonoffDeviceManager
+
 // TODO Inject
 // TODO Scan network for hosts and return a map of HostNames to SonoffDeviceId (IP)
 class SonoffRepositoryImpl(
-        private val deviceManagerBuilder: (SonoffDeviceId) -> SonoffDeviceManager
-        = SonoffDeviceManagerBuilder(SonoffServiceBuilder(), PowerResponseMapper, HostNameResponseMapper)
+        private val deviceManagerBuilder:  DeviceManagerBuilder
 ) : SonoffRepository {
 
 
@@ -86,9 +88,9 @@ class SonoffRepositoryImpl(
     override fun removeDevice(id: SonoffDeviceId): Boolean = map.remove(id) != null
 }
 
-fun main() {
-    runBlocking {
-        val state = SonoffDeviceManagerBuilder(SonoffServiceBuilder(), PowerResponseMapper, HostNameResponseMapper).invoke("192.168.1.144".asSonoffDevice()).getState()
-        println(state)
-    }
-}
+//fun main() {
+//    runBlocking {
+//        val state = SonoffDeviceManagerBuilder(SonoffServiceBuilder(), PowerResponseMapper, HostNameResponseMapper).invoke("192.168.1.144".asSonoffDevice()).getState()
+//        println(state)
+//    }
+//}

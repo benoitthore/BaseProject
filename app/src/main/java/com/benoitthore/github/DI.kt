@@ -6,6 +6,7 @@ import com.benoitthore.base.lib.data.createService
 import com.benoitthore.github.model.GithubRepo
 import com.benoitthore.github.model.GithubService
 import com.benoitthore.github.model.Mappers
+import com.benoitthore.sonoff.data.*
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
@@ -21,4 +22,17 @@ val appModule = module {
     single { GithubRepo(get(), get(githubRepositoryDTOMapperQualifier)) }
     single { MyDispatchers() }
     viewModel { GithubRepositoryViewModel(get(), get()) }
+}
+
+val sonoffModule = module {
+    val isConnectedToWifi = StringQualifier("IsConnectedToWifi")
+    val getGatewayIpAddress = StringQualifier("GetGatewayIpAddress")
+    val deviceManagerBuilder = StringQualifier("deviceManagerBuilder")
+    single<IsConnectedToWifi>(isConnectedToWifi) { IsConnectedToWifi(androidContext()) }
+    single<GetGatewayIpAddress>(getGatewayIpAddress) { GetGatewayIpAddress(androidContext(), get(isConnectedToWifi)) }
+    single<DeviceManagerBuilder>(deviceManagerBuilder) { SonoffDeviceManagerBuilder(get(), PowerResponseMapper, HostNameResponseMapper) }
+
+    single<SonoffRepository> { SonoffRepositoryImpl(get(deviceManagerBuilder)) }
+    single<SonoffServiceBuilder> { SonoffServiceBuilderImpl() }
+    single<NetworkScanner> { NetworkScannerImpl(get(deviceManagerBuilder), get(getGatewayIpAddress)) }
 }

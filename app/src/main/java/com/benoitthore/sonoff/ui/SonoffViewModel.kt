@@ -7,8 +7,10 @@ import com.benoitthore.sonoff.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class SonoffViewModel : BaseViewModel<SonoffViewModel.State, SonoffViewModel.Event>() {
+class SonoffViewModel : BaseViewModel<SonoffViewModel.State, SonoffViewModel.Event>(), KoinComponent {
 
     sealed class State {
         class Success(val isOn: Boolean) : State()
@@ -19,7 +21,9 @@ class SonoffViewModel : BaseViewModel<SonoffViewModel.State, SonoffViewModel.Eve
     object Event
 
     // TODO Inject
-    private val repo: SonoffRepository = SonoffRepositoryImpl()
+    private val repo: SonoffRepository by inject()
+
+    // TODO Inject
     private val device = "192.168.1.144".asSonoffDevice()
 
     private suspend inline fun getDeviceManagerOrEmitError(block: (SonoffDeviceManager) -> Unit) {
