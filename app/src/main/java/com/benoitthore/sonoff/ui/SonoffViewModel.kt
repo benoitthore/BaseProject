@@ -24,7 +24,7 @@ class SonoffViewModel : BaseViewModel<SonoffViewModel.State, SonoffViewModel.Eve
     private val repo: SonoffRepository by inject()
 
     // TODO Inject
-    private val device = "192.168.1.144".asSonoffDevice()
+    private val device = "192.168.1.101".asSonoffDevice()
 
     private suspend inline fun getDeviceManagerOrEmitError(block: (SonoffDeviceManager) -> Unit) {
         repo.getDeviceManager(device)?.let(block)
