@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.wifi.WifiManager
 import android.text.format.Formatter
+import com.benoitthore.base.lib.data.ApiResponse
 import kotlinx.coroutines.*
 import kotlin.system.exitProcess
 
@@ -64,12 +65,36 @@ class NetworkScannerImpl(val deviceManagerBuilder: DeviceManagerBuilder,
 
 }
 
-//fun main() {
-//    runBlocking<Unit> {
-//        NetworkScannerImpl { "192.168.1.1" }.scan().forEach {
-//            println("Found Sonoff $it")
-//        }
-//        println("Scan done")
-//        exitProcess(0)
-//    }
-//}
+fun main() {
+    runBlocking<Unit> {
+        NetworkScannerImpl(object : DeviceManagerBuilder {
+            override fun invoke(p1: SonoffDeviceId) = object : SonoffDeviceManager{
+                override suspend fun getState(): ApiResponse<PowerData> {
+                    TODO("Not yet implemented")
+                }
+
+                override suspend fun toggle(): ApiResponse<PowerData> {
+                    TODO("Not yet implemented")
+                }
+
+                override suspend fun turn(mode: Boolean): ApiResponse<PowerData> {
+                    TODO("Not yet implemented")
+                }
+
+                override suspend fun setHostName(hostName: String): ApiResponse<HostNameData> {
+                    TODO("Not yet implemented")
+                }
+
+                override suspend fun getHostName(): ApiResponse<HostNameData> {
+                    TODO("Not yet implemented")
+                }
+            }
+        }) { "192.168.1.1" }.scan().forEach {
+
+            // TODO Fix this
+            println("Found Sonoff $it")
+        }
+        println("Scan done")
+        exitProcess(0)
+    }
+}
