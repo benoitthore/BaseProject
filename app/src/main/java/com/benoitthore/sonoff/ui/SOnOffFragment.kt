@@ -23,7 +23,7 @@ class SOnOffFragment : Fragment(R.layout.sonoff) {
 //        }
 
         button.setOnClickListener {
-            vm.switch()
+            vm.onButtonClicked()
         }
 
         vm.observe(this) {

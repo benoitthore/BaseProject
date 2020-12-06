@@ -7,7 +7,6 @@ import com.benoitthore.github.model.GithubRepo
 import com.benoitthore.github.model.GithubService
 import com.benoitthore.github.model.Mappers
 import com.benoitthore.sonoff.data.*
-import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.StringQualifier
@@ -25,14 +24,19 @@ val appModule = module {
 }
 
 val sonoffModule = module {
-    val isConnectedToWifi = StringQualifier("IsConnectedToWifi")
-    val getGatewayIpAddress = StringQualifier("GetGatewayIpAddress")
-    val deviceManagerBuilder = StringQualifier("deviceManagerBuilder")
-    single<IsConnectedToWifi>(isConnectedToWifi) { IsConnectedToWifi(androidContext()) }
-    single<GetGatewayIpAddress>(getGatewayIpAddress) { GetGatewayIpAddress(androidContext(), get(isConnectedToWifi)) }
-    single<DeviceManagerBuilder>(deviceManagerBuilder) { SonoffDeviceManagerBuilder(get(), PowerResponseMapper, HostNameResponseMapper) }
+    single<DeviceManagerBuilder>() { SonoffDeviceManagerBuilder(get(), PowerResponseMapper, HostNameResponseMapper) }
 
-    single<SonoffRepository> { SonoffRepositoryImpl(get(deviceManagerBuilder)) }
+    single<SonoffRepository> { SonoffRepositoryImpl(get()) }
     single<SonoffServiceBuilder> { SonoffServiceBuilderImpl() }
-    single<NetworkScanner> { NetworkScannerImpl(get(deviceManagerBuilder), get(getGatewayIpAddress)) }
+    single<NetworkScanner> { NetworkScannerImpl(get()) }
+    single<GetConnectedSonoff> { GetConnectedSonoffImpl(get(), get(), get()) }
+}
+
+val sonoffAndroidModule = module {
+    single<IsConnectedToWifi>() { IsConnectedToWifiAndroid(androidContext()) }
+    single<GetGatewayIpAddress>() { GetGatewayIpAddressAndroid(androidContext(), get()) }
+}
+val sonoffMacOsModule = module {
+    single<IsConnectedToWifi>() { IsConnectedToWifiDesktop() }
+    single<GetGatewayIpAddress>() { GetGatewayIpAddressMacOs() }
 }

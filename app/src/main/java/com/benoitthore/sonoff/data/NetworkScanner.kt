@@ -6,16 +6,29 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.wifi.WifiManager
 import android.text.format.Formatter
-import com.benoitthore.base.lib.data.ApiResponse
+import com.benoitthore.github.sonoffMacOsModule
+import com.benoitthore.github.sonoffModule
+import com.benoitthore.sonoff.replaceAll
 import kotlinx.coroutines.*
+import org.koin.core.KoinComponent
+import org.koin.core.context.GlobalContext
+import org.koin.core.context.startKoin
+import org.koin.core.inject
 import kotlin.system.exitProcess
 
 
 interface NetworkScanner {
-    suspend fun scan(): List<SonoffDeviceId>
+    suspend fun scan(gatewayIpAddress: String): List<SonoffDeviceId>
 }
 
-class IsConnectedToWifi(val context: Context) : () -> Boolean {
+interface IsConnectedToWifi : () -> Boolean
+
+class IsConnectedToWifiDesktop() : IsConnectedToWifi {
+    override fun invoke(): Boolean = true
+
+}
+
+class IsConnectedToWifiAndroid(val context: Context) : IsConnectedToWifi {
     override fun invoke(): Boolean {
         val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connManager.allNetworks.forEach {
@@ -28,20 +41,43 @@ class IsConnectedToWifi(val context: Context) : () -> Boolean {
 
 }
 
-class GetGatewayIpAddress(private val context: Context, val isConnectedToWifi: () -> Boolean) : () -> String? {
-    override fun invoke(): String? {
-        if (!isConnectedToWifi()) return null
-        val wifiMgr = context.applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
-        return Formatter.formatIpAddress(wifiMgr.dhcpInfo.gateway)
+interface GetGatewayIpAddress {
+    suspend operator fun invoke(): String?
+}
+
+class GetGatewayIpAddressMacOs : GetGatewayIpAddress {
+    override suspend fun invoke(): String? = withContext(Dispatchers.IO) {
+        val lines = Runtime.getRuntime().exec("traceroute -m 1 google.com").inputStream.bufferedReader().readLines()
+
+        // Uncomment to stop crashes
+//        if (lines.isEmpty()) {
+//            return@withContext null
+//        }
+
+        val line = lines.first().replaceAll("\t", " ").replaceAll("  ", " ").trim().split(" ")
+//        if (line.size >= 2) {
+        line[1]
+//        } else {
+//            null
+//        }
     }
 
 }
 
-class NetworkScannerImpl(val deviceManagerBuilder: DeviceManagerBuilder,
-                         private val getGatewayIpAddress: () -> String) : NetworkScanner {
+class GetGatewayIpAddressAndroid(private val context: Context, val isConnectedToWifi: IsConnectedToWifi) : GetGatewayIpAddress {
+    override suspend fun invoke(): String? {
+        if (!isConnectedToWifi()) return null
+        val wifiMgr = context.applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
+        val ret =  Formatter.formatIpAddress(wifiMgr.dhcpInfo.gateway)
+        return ret
+    }
 
-    override suspend fun scan(): List<SonoffDeviceId> {
-        val base = getGatewayIpAddress().let { it.substring(0, it.lastIndexOf('.') + 1) }
+}
+
+class NetworkScannerImpl(val deviceManagerBuilder: DeviceManagerBuilder) : NetworkScanner {
+
+    override suspend fun scan(gatewayIpAddress: String): List<SonoffDeviceId> {
+        val base = gatewayIpAddress.let { it.substring(0, it.lastIndexOf('.') + 1) }
 
         return supervisorScope {
             (0..255).asSequence()
@@ -54,8 +90,8 @@ class NetworkScannerImpl(val deviceManagerBuilder: DeviceManagerBuilder,
         }
     }
 
-    private fun CoroutineScope.testIp(it: String): Deferred<Pair<SonoffDeviceId, Boolean>?> {
-        val id = it.asSonoffDevice()
+    private fun CoroutineScope.testIp(ip: String): Deferred<Pair<SonoffDeviceId, Boolean>?> {
+        val id = ip.asSonoffDevice()
         return async {
             withTimeoutOrNull(1000L) {
                 id to deviceManagerBuilder(id).isReachable()
@@ -67,34 +103,37 @@ class NetworkScannerImpl(val deviceManagerBuilder: DeviceManagerBuilder,
 
 fun main() {
     runBlocking<Unit> {
-        NetworkScannerImpl(object : DeviceManagerBuilder {
-            override fun invoke(p1: SonoffDeviceId) = object : SonoffDeviceManager{
-                override suspend fun getState(): ApiResponse<PowerData> {
-                    TODO("Not yet implemented")
-                }
-
-                override suspend fun toggle(): ApiResponse<PowerData> {
-                    TODO("Not yet implemented")
-                }
-
-                override suspend fun turn(mode: Boolean): ApiResponse<PowerData> {
-                    TODO("Not yet implemented")
-                }
-
-                override suspend fun setHostName(hostName: String): ApiResponse<HostNameData> {
-                    TODO("Not yet implemented")
-                }
-
-                override suspend fun getHostName(): ApiResponse<HostNameData> {
-                    TODO("Not yet implemented")
-                }
-            }
-        }) { "192.168.1.1" }.scan().forEach {
-
-            // TODO Fix this
-            println("Found Sonoff $it")
+        startKoin {
+            modules(listOf(
+                    sonoffModule, sonoffMacOsModule
+            ))
         }
-        println("Scan done")
+        val getConnectedSonoff by GlobalContext.get().koin.inject<GetConnectedSonoff>()
+        getConnectedSonoff()?.let {
+            it.toggle()
+            delay(1000L)
+            it.toggle()
+        }
         exitProcess(0)
     }
+}
+
+
+interface GetConnectedSonoff {
+    suspend operator fun invoke(): SonoffDeviceManager?
+}
+
+class GetConnectedSonoffImpl(
+        private val networkScanner: NetworkScanner,
+        private val deviceManagerBuilder: DeviceManagerBuilder,
+        private val getGatewayIpAddress: GetGatewayIpAddress
+) : GetConnectedSonoff {
+
+
+    override suspend fun invoke(): SonoffDeviceManager? = kotlin.runCatching {
+        val id = networkScanner.scan(getGatewayIpAddress()!!).first()
+        deviceManagerBuilder(id)
+    }.getOrNull()
+
+
 }

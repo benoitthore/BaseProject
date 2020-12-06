@@ -28,7 +28,7 @@ class SonoffViewModel : BaseViewModel<SonoffViewModel.State, SonoffViewModel.Eve
 
     private suspend inline fun getDeviceManagerOrEmitError(block: (SonoffDeviceManager) -> Unit) {
         repo.getDeviceManager(device)?.let(block)
-                ?: emitState { State.Error("Device not found $device") }
+                ?: emitState { State.Error("Device not found ${device.id}") }
     }
 
     private var job: Job? = null
@@ -50,7 +50,7 @@ class SonoffViewModel : BaseViewModel<SonoffViewModel.State, SonoffViewModel.Eve
         emitState { state }
     }
 
-    fun switch() {
+    fun onButtonClicked() {
         if (job?.isActive == true) {
             return
         }
